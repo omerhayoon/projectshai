@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
-import "./CSS/Login.css"; // Import CSS file for styling
+import "../CSS/Login.css"; // Import CSS file for styling
 
 const Login = () => {
     const [username, setUsername] = useState("");
@@ -10,26 +10,26 @@ const Login = () => {
     const [errorCode, setErrorCode] = useState(-1);
     const navigate = useNavigate(); // Initialize useNavigate
     const SERVER_URL = "";
-    const ERROR_PASSWORD = 401;
-    const USER_NOT_EXIST = 400;
+    //const ERROR_PASSWORD = 401;
+   // const USER_NOT_EXIST = 400;
 
-    function showErrorCode() {
-        let errorMessage = "";
-        switch (errorCode) {
-            case -1:
-                errorMessage = "Please fill in all fields";
-                break;
-            case USER_NOT_EXIST:
-                errorMessage = "Username doesn't exist, SIGN-UP 😁";
-                break;
-            case ERROR_PASSWORD:
-                errorMessage = "Wrong Password";
-                break;
-            default:
-                errorMessage = "Unknown error";
-        }
-        return errorMessage;
-    }
+    // function showErrorCode() {
+    //     let errorMessage = "";
+    //     switch (errorCode) {
+    //         case -1:
+    //             errorMessage = "Please fill in all fields";
+    //             break;
+    //         case USER_NOT_EXIST:
+    //             errorMessage = "Username doesn't exist, SIGN-UP 😁";
+    //             break;
+    //         case ERROR_PASSWORD:
+    //             errorMessage = "Wrong Password";
+    //             break;
+    //         default:
+    //             errorMessage = "Unknown error";
+    //     }
+    //     return errorMessage;
+    // }
 
     // ניווט לעמוד SignUp
     const navigateToSignUp = () => {
@@ -57,7 +57,7 @@ const Login = () => {
                 <button className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
                     {showPassword ? "Hide" : "Show"} Password
                 </button>
-                {!validFields && <p className="error-message">{showErrorCode()}</p>}
+                {/*{!validFields && <p className="error-message">{showErrorCode()}</p>}*/}
                 <button className="login-button">Login</button>
 
                 {/* New link to navigate to Sign-Up */}
