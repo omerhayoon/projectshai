@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import "./SignUp.css"; // Import CSS file for styling
+// import "./SignUp.css"; // Import CSS file for styling
 
 const SignUp = () => {
 
     return (
         <div>
-            check
+            SIGNUP
         </div>
     );
 };
