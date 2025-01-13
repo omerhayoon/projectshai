@@ -1,7 +1,9 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom"; // Import useNavigate for navigation
 import "../CSS/Login.css"; // Import CSS file for styling
-import { FaUser } from "react-icons/fa";
+import {FaUser} from "react-icons/fa";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 
 const Login = () => {
@@ -14,8 +16,33 @@ const Login = () => {
     const SERVER_URL = "";
 
     const navigateToLogin = () => {
+        try {
+            axios.post("http://localhost:9124/api/login?username=" + username + "&password=" + password)
+                .then(response => {
+                    if (response.data != null) {
+                        if (response.data.success) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Welcome "+ username,
+                                text: "You have successfully logged in!",
+                                confirmButtonColor: "#4caf50", // ירוק לאישור
+                                background: "#f4f4f4", // רקע בהיר
+                            });
 
-        navigate('/HomePage');
+                            navigate("/HomePage");
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "The password or username is incorrect!",
+                            });
+                        }
+                    }
+                });
+        } catch (error) {
+            console.error("Error during Login:", error);
+            alert("Failed to Login. Please try again.");
+        }
     };
 
     const navigateToSignUp = () => {
@@ -23,7 +50,7 @@ const Login = () => {
     };
 
     return (
-        <div >
+        <div>
             <div className="header">
                 <p>ברוכים הבאים לאתר</p>
                 <p>"לומדים ונהנים"</p>
@@ -51,7 +78,7 @@ const Login = () => {
                     <button className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
                         {showPassword ? "Hide" : "Show"} Password
                     </button>
-                    <button className="login-button" onClick={()=>navigateToLogin()}>התחברות</button>
+                    <button className="login-button" onClick={() => navigateToLogin()}>התחברות</button>
                     <div className="signup-link">
                         <p> ? עדיין לא נרשמת </p>
                         <button className="signup-button" onClick={navigateToSignUp}>
@@ -60,7 +87,7 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 
 };

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // Import useNavigate for navigation
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const SignUp = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -18,21 +18,26 @@ const SignUp = () => {
             return;
         }
         try {
-             axios.post("http://localhost:9124/api/sign-up?username="+username+"&password="+password+"&confirmPassword="+confirmPassword+"&email="+email)
-                 .then(response=>{
-                if (response.data!=null){
-                    if (response.data.success){
-                        alert("User added successfully")
-                        navigate("/Login");
+            axios.post("http://localhost:9124/api/sign-up?username="+username+"&password="+password+"&confirmPassword="+confirmPassword+"&email="+email)
+                .then(response => {
+                    if (response.data != null) {
+                        if (response.data.success) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Welcome "+ username,
+                                text: "You have successfully sign-up!",
+                                confirmButtonColor: "#4caf50", // ירוק לאישור
+                                background: "#f4f4f4", // רקע בהיר
+                            });
+                            navigate("/Login");
+                        }
                     }
-                }
-            })
+                });
         } catch (error) {
             console.error("Error during sign-up:", error);
             alert("Failed to sign up. Please try again.");
         }
     };
-
 
     const navigateToLogin = () => {
         navigate("/Login");
@@ -60,14 +65,6 @@ const SignUp = () => {
                         required
                     />
                     <input
-                        type="tel"
-                        placeholder="טלפון"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        style={styles.input}
-                        required
-                    />
-                    <input
                         type={showPassword ? "text" : "password"}
                         placeholder="סיסמא"
                         value={password}
@@ -91,7 +88,7 @@ const SignUp = () => {
                         {showPassword ? "Hide" : "Show"} Password
                     </button>
                     <button type="submit" style={styles.submitButton}>
-                        Sign Up
+                        הרשמה
                     </button>
                 </form>
                 <button
@@ -99,7 +96,7 @@ const SignUp = () => {
                     onClick={navigateToLogin}
                     style={styles.backButton}
                 >
-                    Back to Login
+                    חזרה לדף הראשי
                 </button>
             </div>
         </div>
