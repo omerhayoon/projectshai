@@ -18,13 +18,14 @@ const SignUp = () => {
             return;
         }
         try {
-             axios.post("http://localhost:9124/sign-up?username="+username+"&password="+password+"&confirmPassword="+confirmPassword+"&email="+email)
+             axios.post("http://localhost:9124/api/sign-up?username="+username+"&password="+password+"&confirmPassword="+confirmPassword+"&email="+email)
                  .then(response=>{
-                 if (response.data==null){
-                     alert("ERROR")
-                 }else {
-                     alert("OK")
-                 }
+                if (response.data!=null){
+                    if (response.data.success){
+                        alert("User added successfully")
+                        navigate("/Login");
+                    }
+                }
             })
         } catch (error) {
             console.error("Error during sign-up:", error);
