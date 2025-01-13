@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Import useNavigate for navigation
 
 const SignUp = () => {
     const [username, setUsername] = useState("");
@@ -10,16 +11,27 @@ const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (password !== confirmPassword) {
             alert("Passwords do not match!");
             return;
         }
-
-        console.log({ username, email, phone, password });
+        try {
+             axios.post("http://localhost:9124/sign-up?username="+username+"&password="+password+"&confirmPassword="+confirmPassword+"&email="+email)
+                 .then(response=>{
+                 if (response.data==null){
+                     alert("ERROR")
+                 }else {
+                     alert("OK")
+                 }
+            })
+        } catch (error) {
+            console.error("Error during sign-up:", error);
+            alert("Failed to sign up. Please try again.");
+        }
     };
+
 
     const navigateToLogin = () => {
         navigate("/Login");

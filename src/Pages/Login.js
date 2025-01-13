@@ -1,6 +1,8 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom"; // Import useNavigate for navigation
 import "../CSS/Login.css"; // Import CSS file for styling
+import { FaUser } from "react-icons/fa";
+
 
 const Login = () => {
     const [username, setUsername] = useState("");
@@ -34,8 +36,11 @@ const Login = () => {
                         placeholder="שם משתמש"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
+
                         className="input-field"
+
                     />
+
                     <input
                         type={showPassword ? "text" : "password"}
                         placeholder="סיסמא"

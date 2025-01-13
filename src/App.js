@@ -5,12 +5,17 @@ import SignUp from "./Pages/SignUp";
 import HomePage from "./Pages/HomePage";
 
 const App = () => {
+    {<Login/>}
     return (
         <Router>
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/HomePage" element={<HomePage />} />
+
+
+
+
             </Routes>
         </Router>
     );
