@@ -1,119 +1,120 @@
 /* Style for the login page */
 body {
-    font-family: 'Comic Sans MS', sans-serif; /* גופן ידידותי לילדים */
-    margin: 0;
-    padding: 0;
-    /*background: linear-gradient(to bottom, #a8d5e2, #fdf1dc); !* רקע גרדיאנט בהיר *!*/
-    background-image: url('../IMG/imag-background.png'); /* נתיב יחסי לתמונה שבתיקיית IMG */
-    background-size: cover; /* התאמת התמונה לגודל המסך */
-    background-repeat: no-repeat; /* ללא חזרה של התמונה */
-    background-attachment: fixed; /* התמונה נשארת קבועה בעת גלילה */
-    color: #333; /* צבע טקסט כהה כדי להבטיח ניגודיות טובה */
+  font-family: "Comic Sans MS", sans-serif; /* גופן ידידותי לילדים */
+  margin: 0;
+  padding: 0;
+  /*background: linear-gradient(to bottom, #a8d5e2, #fdf1dc); !* רקע גרדיאנט בהיר *!*/
+  background-image: url("../IMG/imag-background.png");
+  background-size: contain; /* Change to contain to reduce zoom */
+  background-repeat: no-repeat; /* Avoid tiling */
+  background-position: center; /* Center the image */
+  background-color: #f4f4f4; /* Fallback color in case the image doesn't load */
+  color: #333; /* צבע טקסט כהה כדי להבטיח ניגודיות טובה */
 }
 
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .login-form {
-    background-color: rgba(255, 255, 255, 0.9); /* רקע לבן עם שקיפות */
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 320px;
-    text-align: center;
+  background-color: rgba(255, 255, 255, 0.9); /* רקע לבן עם שקיפות */
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 320px;
+  text-align: center;
 }
 
 h1 {
-    font-size: 26px;
-    color: #333;
-    margin-bottom: 20px;
-    font-family: 'Comic Sans MS', sans-serif; /* גופן ידידותי לילדים */
+  font-size: 26px;
+  color: #333;
+  margin-bottom: 20px;
+  font-family: "Comic Sans MS", sans-serif; /* גופן ידידותי לילדים */
 }
 
 .input-field {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-size: 16px;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 16px;
 }
 
 .input-field:focus {
-    outline: none;
-    border-color: #f4a261; /* צבע בהיר יותר */
+  outline: none;
+  border-color: #f4a261; /* צבע בהיר יותר */
 }
 
 .toggle-password {
-    background: none;
-    border: none;
-    color: #ff6b6b;
-    cursor: pointer;
-    font-size: 14px;
-    margin-bottom: 20px;
+  background: none;
+  border: none;
+  color: #ff6b6b;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 20px;
 }
 
 .login-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #ff6b6b;
-    color: white;
-    border: none;
-    border-radius: 15px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  width: 100%;
+  padding: 10px;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .login-button:hover {
-    background-color: #f44336;
+  background-color: #f44336;
 }
 
 .signup-link {
-    margin-top: 20px;
-    font-size: 14px;
-    color: #333;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #333;
 }
 
 .signup-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 15px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  width: 100%;
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .signup-button:hover {
-    background-color: #388e3c;
+  background-color: #388e3c;
 }
 
 .header {
-    text-align: center;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.9); /* רקע לבן שקוף */
-    border: 2px solid #87ceeb;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-bottom: 20px;
+  text-align: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.9); /* רקע לבן שקוף */
+  border: 2px solid #87ceeb;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
 }
 
 .header p {
-    margin: 0;
-    font-size: 1.8rem;
-    color: #00509e;
-    font-family: 'Comic Sans MS', sans-serif;
+  margin: 0;
+  font-size: 1.8rem;
+  color: #00509e;
+  font-family: "Comic Sans MS", sans-serif;
 }
 
 .header p:first-child {
-    font-weight: bold;
-    font-size: 2.2rem;
-    color: #ff6b6b;
+  font-weight: bold;
+  font-size: 2.2rem;
+  color: #ff6b6b;
 }
