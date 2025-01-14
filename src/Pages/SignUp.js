@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Import useNavigate for navigation
@@ -10,7 +10,26 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [user, setUser] = useState(null);
+
   const navigate = useNavigate();
+
+  const checkSession = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:9124/api/check-session"
+      );
+      if (response.data.success) {
+        setUser(response.data.user);
+      }
+    } catch (error) {
+      console.error("Session check failed:", error);
+    }
+  };
+
+  useEffect(() => {
+    checkSession();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,20 +44,23 @@ const SignUp = () => {
             username +
             "&password=" +
             password +
-            "&confirmPassword=" +
-            confirmPassword +
             "&email=" +
-            email
+            email,
+          null,
+          { withCredentials: true }
         )
         .then((response) => {
+          console.log("Entered response");
+          console.log(response.data);
           if (response.data != null) {
             if (response.data.success) {
+              console.log("success");
               Swal.fire({
                 icon: "success",
                 title: "Welcome " + username,
                 text: "You have successfully sign-up!",
-                confirmButtonColor: "#4caf50", // ירוק לאישור
-                background: "#f4f4f4", // רקע בהיר
+                confirmButtonColor: "#4caf50",
+                background: "#f4f4f4",
               });
               navigate("/Login");
             }
