@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 import "../CSS/Login.css"; // Import CSS file for styling
 import { FaUser } from "react-icons/fa";
+import axios from "axios";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -13,7 +15,39 @@ const Login = () => {
   const SERVER_URL = "";
 
   const navigateToLogin = () => {
-    navigate("/HomePage");
+    try {
+      axios
+        .post(
+          "http://localhost:9124/api/login?username=" +
+            username +
+            "&password=" +
+            password
+        )
+        .then((response) => {
+          if (response.data != null) {
+            if (response.data.success) {
+              Swal.fire({
+                icon: "success",
+                title: "Welcome " + username,
+                text: "You have successfully logged in!",
+                confirmButtonColor: "#4caf50", // ירוק לאישור
+                background: "#f4f4f4", // רקע בהיר
+              });
+
+              navigate("/HomePage");
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "The password or username is incorrect!",
+              });
+            }
+          }
+        });
+    } catch (error) {
+      console.error("Error during Login:", error);
+      alert("Failed to Login. Please try again.");
+    }
   };
 
   const navigateToSignUp = () => {

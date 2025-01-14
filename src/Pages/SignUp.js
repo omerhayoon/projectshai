@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Import useNavigate for navigation
 import "../CSS/SignUp.css"; // Import the external CSS file
@@ -6,7 +7,6 @@ import "../CSS/SignUp.css"; // Import the external CSS file
 const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -33,7 +33,13 @@ const SignUp = () => {
         .then((response) => {
           if (response.data != null) {
             if (response.data.success) {
-              alert("User added successfully");
+              Swal.fire({
+                icon: "success",
+                title: "Welcome " + username,
+                text: "You have successfully sign-up!",
+                confirmButtonColor: "#4caf50", // ירוק לאישור
+                background: "#f4f4f4", // רקע בהיר
+              });
               navigate("/Login");
             }
           }
@@ -69,14 +75,7 @@ const SignUp = () => {
             className="input"
             required
           />
-          <input
-            type="tel"
-            placeholder="טלפון"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="input"
-            required
-          />
+
           <input
             type={showPassword ? "text" : "password"}
             placeholder="סיסמא"
