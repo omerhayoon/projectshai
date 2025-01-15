@@ -1,111 +1,66 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import "./CSS/App.css";
+import { axios } from "./utils/axiosConfig";
+import { getSession, clearSession } from "./utils/auth";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
 import HomePage from "./Pages/HomePage";
 import Game from "./Pages/Game";
-import LoadingSpinner from "./Components/LoadingSpinner";
-
-const ProtectedFromAuth = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await axios.post(
-          "http://localhost:9124/api/check-session",
-          null,
-          {
-            withCredentials: true,
-          }
-        );
-        setIsAuthenticated(response.data.success);
-      } catch (error) {
-        setIsAuthenticated(false);
-      }
-    };
-
-    checkAuth();
-  }, []);
-
-  if (isAuthenticated === null) {
-    return <LoadingSpinner />;
-  }
-
-  return isAuthenticated ? <Navigate to="/homepage" /> : children;
-};
-
-// קומפוננטת הגנה למשתמשים לא מחוברים
-const ProtectedRoute = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await axios.post(
-          "http://localhost:9124/api/check-session",
-          null,
-          {
-            withCredentials: true,
-          }
-        );
-        setIsAuthenticated(response.data.success);
-      } catch (error) {
-        setIsAuthenticated(false);
-      }
-    };
-
-    checkAuth();
-  }, []);
-
-  if (isAuthenticated === null) {
-    return <div>Loading...</div>;
-  }
-
-  return isAuthenticated ? children : <Navigate to="/login" />;
-};
 
 const App = () => {
+  const [sessionId, setSessionId] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const currentSession = getSession();
+        if (currentSession) {
+          const { data } = await axios.post("/check-session");
+          setSessionId(data.success ? currentSession : null);
+          if (!data.success) clearSession();
+        }
+      } catch (error) {
+        console.error("Session check failed:", error);
+        clearSession();
+        setSessionId(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkSession();
+    const interval = setInterval(checkSession, 300000);
+    return () => clearInterval(interval);
+  }, []);
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/homepage" />} />
-
-        <Route
-          path="/login"
-          element={
-            <ProtectedFromAuth>
-              <Login />
-            </ProtectedFromAuth>
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            <ProtectedFromAuth>
-              <SignUp />
-            </ProtectedFromAuth>
-          }
-        />
-
-        <Route
-          path="/game"
-          element={
-            <ProtectedRoute>
-              <Game />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route path="/homepage" element={<HomePage />} />
+        {!sessionId ? (
+          <>
+            <Route
+              path="/login"
+              element={<Login setSessionId={setSessionId} />}
+            />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </>
+        ) : (
+          <>
+            <Route
+              path="/homepage"
+              element={<HomePage setSessionId={setSessionId} />}
+            />
+            <Route path="/game" element={<Game />} />
+            <Route path="*" element={<Navigate to="/homepage" replace />} />
+          </>
+        )}
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 };
 
