@@ -1,58 +1,48 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom"; 
-import "../CSS/Login.css"; 
-import axios from "axios";
+import "../CSS/Login.css";
+import { axios } from "../utils/axiosConfig";
+import { setSession, showLoginSuccess, showLoginError } from "../utils/auth";
 
-const Login = () => {
+const Login = ({ setSessionId }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const navigateToLogin = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:9124/api/login",
-        null,
+        "/login",
+        {},
         {
           params: {
             username: username,
             password: password,
           },
-          withCredentials: true, 
+          withCredentials: true,
         }
       );
 
       if (response.data?.success) {
-        Swal.fire({
-          icon: "success",
-          title: "Welcome " + username,
-          text: "You have successfully logged in!",
-          confirmButtonColor: "#4caf50",
-          background: "#f4f4f4",
-        });
+        setSession(response.data.sessionId);
+        setSessionId(response.data.sessionId);
+        localStorage.setItem("username", response.data.user.username);
 
-        navigate("/HomePage");
+        await showLoginSuccess(username);
+        navigate("/homepage", { replace: true });
       } else {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "The password or username is incorrect!",
-        });
+        await showLoginError();
       }
     } catch (error) {
       console.error("Error during Login:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Login Failed",
-        text: "Failed to login. Please try again.",
-      });
+      await showLoginError();
     }
   };
 
   const navigateToSignUp = () => {
-    navigate("/SignUp");
+    navigate("/SignUp", { replace: true });
   };
 
   return (
@@ -71,7 +61,6 @@ const Login = () => {
             onChange={(e) => setUsername(e.target.value)}
             className="input-field"
           />
-
           <input
             type={showPassword ? "text" : "password"}
             placeholder="סיסמא"
@@ -85,11 +74,11 @@ const Login = () => {
           >
             {showPassword ? "Hide" : "Show"} Password
           </button>
-          <button className="login-button" onClick={() => navigateToLogin()}>
+          <button className="login-button" onClick={navigateToLogin}>
             התחברות
           </button>
           <div className="signup-link">
-            <p> ? עדיין לא נרשמת </p>
+            <p>? עדיין לא נרשמת</p>
             <button className="signup-button" onClick={navigateToSignUp}>
               הרשמה
             </button>
