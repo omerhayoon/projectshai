@@ -48,8 +48,7 @@ const Login = ({ setSessionId }) => {
   return (
     <div>
       <div className="header">
-        <p>ברוכים הבאים לאתר</p>
-        <p>"לומדים ונהנים"</p>
+        <p>Welcome to Math is Fun</p>
       </div>
       <div className="login-container">
         <div className="login-form">

@@ -63,6 +63,7 @@ const Game = () => {
 
   return (
     <div>
+
       <h1>Math Game</h1>
       <h2>Level: {level}</h2>
       <h3>{question.question}</h3>
@@ -79,6 +80,8 @@ const Game = () => {
         <h3>Statistics:</h3>
         <p>Correct Answers: {stats.correct}</p>
         <p>Incorrect Answers: {stats.incorrect}</p>
+      </div>
+      <div>
       </div>
     </div>
   );
