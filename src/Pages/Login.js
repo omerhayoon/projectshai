@@ -11,7 +11,7 @@ const Login = ({ setSessionId }) => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const navigateToLogin = async () => {
+  const handleLogin = async () => {
     try {
       const response = await axios.post(
         "/api/login",
@@ -28,7 +28,7 @@ const Login = ({ setSessionId }) => {
       if (response.data?.success) {
         setSession(response.data.sessionId);
         setSessionId(response.data.sessionId);
-        localStorage.setItem("username", response.data.user.username);
+        localStorage.setItem("username", username);
 
         await showLoginSuccess(username);
         navigate("/homepage", { replace: true });
@@ -42,11 +42,11 @@ const Login = ({ setSessionId }) => {
   };
 
   const navigateToSignUp = () => {
-    navigate("/SignUp", { replace: true });
+    navigate("/signup", { replace: true });
   };
 
   return (
-    <div>
+    <div className="login-page-container">
       <div className="header">
         <p>Welcome to Math is Fun</p>
       </div>
@@ -73,7 +73,7 @@ const Login = ({ setSessionId }) => {
           >
             {showPassword ? "Hide" : "Show"} Password
           </button>
-          <button className="login-button" onClick={navigateToLogin}>
+          <button className="login-button" onClick={handleLogin}>
             התחברות
           </button>
           <div className="signup-link">

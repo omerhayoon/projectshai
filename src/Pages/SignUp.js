@@ -20,113 +20,119 @@ const SignUp = () => {
     confirmPassword: "",
   });
 
+  const [touched, setTouched] = useState({
+    username: false,
+    email: false,
+    password: false,
+    confirmPassword: false,
+  });
+
   const navigate = useNavigate();
 
-  // Validation patterns
   const validationPatterns = {
+    username: /^[a-zA-Z0-9]{6,}$/,
+    email: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
     password: {
       length: /^.{6,12}$/,
       specialChar: /[!@#$%^&*]/,
       number: /\d/,
       letter: /[a-zA-Z]/,
     },
-    email: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
-    username: /^[a-zA-Z0-9]{6,}$/,
   };
 
   const validateField = (name, value) => {
-    let isValid = false;
+    if (!value) return "invalid";
 
     switch (name) {
       case "username":
-        isValid = value.length >= 6 && validationPatterns.username.test(value);
-        break;
+        return validationPatterns.username.test(value.trim())
+          ? "valid"
+          : "invalid";
 
       case "email":
-        isValid = validationPatterns.email.test(value);
-        break;
+        return validationPatterns.email.test(value.trim().toLowerCase())
+          ? "valid"
+          : "invalid";
 
       case "password":
-        isValid =
-          validationPatterns.password.length.test(value) &&
+        return validationPatterns.password.length.test(value) &&
           validationPatterns.password.specialChar.test(value) &&
           validationPatterns.password.number.test(value) &&
-          validationPatterns.password.letter.test(value);
-        break;
+          validationPatterns.password.letter.test(value)
+          ? "valid"
+          : "invalid";
 
       case "confirmPassword":
-        isValid = value === formData.password && value !== "";
-        break;
+        return value === formData.password ? "valid" : "invalid";
 
       default:
-        break;
+        return "invalid";
     }
-
-    return isValid;
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // Only set status if there's a value
-    if (value) {
-      const isValid = validateField(name, value);
+    if (touched[name]) {
       setInputStatus((prev) => ({
         ...prev,
-        [name]: isValid ? "valid" : "invalid",
+        [name]: validateField(name, value),
       }));
+    }
 
-      // Special handling for confirmPassword
-      if (name === "password") {
-        const confirmIsValid =
-          formData.confirmPassword === value && value !== "";
-        setInputStatus((prev) => ({
-          ...prev,
-          confirmPassword: formData.confirmPassword
-            ? confirmIsValid
-              ? "valid"
-              : "invalid"
-            : "",
-        }));
-      }
-      if (name === "confirmPassword") {
-        const confirmIsValid = value === formData.password && value !== "";
-        setInputStatus((prev) => ({
-          ...prev,
-          confirmPassword: confirmIsValid ? "valid" : "invalid",
-        }));
-      }
-    } else {
-      // If the field is empty, reset its status
+    if (name === "password" && touched.confirmPassword) {
       setInputStatus((prev) => ({
         ...prev,
-        [name]: "",
+        confirmPassword: validateField(
+          "confirmPassword",
+          formData.confirmPassword
+        ),
       }));
     }
   };
 
+  const handleBlur = (e) => {
+    const { name } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    setInputStatus((prev) => ({
+      ...prev,
+      [name]: validateField(name, formData[name]),
+    }));
+  };
+
   const getInputClassName = (fieldName) => {
-    const baseClass = "input";
-    switch (inputStatus[fieldName]) {
-      case "valid":
-        return `${baseClass} valid-input`;
-      case "invalid":
-        return `${baseClass} invalid-input`;
-      default:
-        return baseClass;
-    }
+    if (!touched[fieldName]) return "input";
+    return `input ${
+      inputStatus[fieldName] ? `${inputStatus[fieldName]}-input` : ""
+    }`;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if all fields are valid
-    const isFormValid = Object.keys(formData).every(
-      (key) => inputStatus[key] === "valid"
-    );
+    // Mark all fields as touched
+    setTouched({
+      username: true,
+      email: true,
+      password: true,
+      confirmPassword: true,
+    });
 
-    if (!isFormValid) {
+    // Validate all fields
+    const newStatus = {
+      username: validateField("username", formData.username),
+      email: validateField("email", formData.email),
+      password: validateField("password", formData.password),
+      confirmPassword: validateField(
+        "confirmPassword",
+        formData.confirmPassword
+      ),
+    };
+    setInputStatus(newStatus);
+
+    // Check if all fields are valid
+    if (Object.values(newStatus).some((status) => status !== "valid")) {
       Swal.fire({
         icon: "error",
         title: "שגיאת קלט",
@@ -135,45 +141,49 @@ const SignUp = () => {
       return;
     }
 
+    const params = new URLSearchParams({
+      username: formData.username.trim(),
+      password: formData.password,
+      confirmPassword: formData.confirmPassword,
+      email: formData.email.trim().toLowerCase(),
+    });
+
+    console.log("Sending signup data:", params.toString());
+
     try {
-      const { data } = await axios.post("/sign-up", null, {
-        params: {
-          username: formData.username,
-          password: formData.password,
-          confirmPassword: formData.confirmPassword,
-          email: formData.email,
+      const { data } = await axios.post("/api/sign-up", params, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       });
 
-      if (data?.success) {
+      console.log("Server response:", data);
+
+      if (data && data.success) {
         await Swal.fire({
           icon: "success",
           title: `ברוך הבא ${formData.username}`,
           text: "נרשמת בהצלחה!",
           confirmButtonColor: "#4caf50",
-          background: "#f4f4f4",
         });
-        navigate("/login", { replace: true });
+        navigate("/login");
       } else {
-        await Swal.fire({
-          icon: "error",
-          title: "שגיאה",
-          text: data.message,
-          confirmButtonColor: "#4caf50",
-          background: "#f4f4f4",
-        });
+        throw new Error(data?.message || "Registration failed");
       }
     } catch (error) {
-      console.error("Signup error:", error);
+      console.error("Full error object:", error);
       Swal.fire({
         icon: "error",
         title: "שגיאת הרשמה",
-        text: "ההרשמה נכשלה. אנא נסה שוב.",
+        text:
+          error.response?.data?.message ||
+          error.message ||
+          "ההרשמה נכשלה. אנא נסה שוב.",
       });
     }
   };
 
-  const renderValidationIcons = () => (
+  const renderPasswordRequirements = () => (
     <div className="password-requirements">
       <ul>
         <li
@@ -245,13 +255,14 @@ const SignUp = () => {
                 placeholder={field.placeholder}
                 value={formData[field.name]}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 className={getInputClassName(field.name)}
                 required
               />
             </div>
           ))}
 
-          {formData.password && renderValidationIcons()}
+          {renderPasswordRequirements()}
 
           <button
             type="button"
@@ -260,13 +271,15 @@ const SignUp = () => {
           >
             {showPassword ? "Hide" : "Show"} Password
           </button>
+
           <button type="submit" className="submitButton">
             Sign Up
           </button>
         </form>
+
         <button
           type="button"
-          onClick={() => navigate("/login", { replace: true })}
+          onClick={() => navigate("/login")}
           className="backButton"
         >
           Back to Login

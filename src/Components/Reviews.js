@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { axios } from "../utils/axiosConfig";
 import "../CSS/Reviews.css";
-
+const isHebrew = (text) => {
+  const hebrewPattern = /[\u0590-\u05FF]/; // Hebrew Unicode range
+  return hebrewPattern.test(text);
+};
 const Reviews = ({ username }) => {
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState("");
@@ -68,8 +71,12 @@ const Reviews = ({ username }) => {
           <tbody>
             {reviews.map((review) => (
               <tr key={review.id}>
-                <td>{review.username}</td>
-                <td>{review.content}</td>
+                <strong>
+                  <td>{review.username}</td>
+                </strong>
+                <td dir={isHebrew(review.content) ? "rtl" : "ltr"}>
+                  {review.content}
+                </td>
               </tr>
             ))}
           </tbody>

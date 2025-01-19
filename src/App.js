@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./CSS/App.css";
 import { axios } from "./utils/axiosConfig";
 import { getSession, clearSession } from "./utils/auth";
+import Navbar from "./Components/Navbar";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
 import HomePage from "./Pages/HomePage";
@@ -39,19 +40,26 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route
-          path="/homepage"
-          element={
-            <HomePage setSessionId={setSessionId} sessionId={sessionId} />
-          }
-        />
-        <Route path="/login" element={<Login setSessionId={setSessionId} />} />
-        <Route path="/signup" element={<SignUp />} />
-        {sessionId && <Route path="/game" element={<Game />} />}
-        <Route path="*" element={<Navigate to="/homepage" replace />} />{" "}
-        {/* Changed from /login to /homepage */}
-      </Routes>
+      <div className="app-container">
+        <Navbar setSessionId={setSessionId} sessionId={sessionId} />
+        <div className="main-content">
+          <Routes>
+            <Route
+              path="/homepage"
+              element={
+                <HomePage setSessionId={setSessionId} sessionId={sessionId} />
+              }
+            />
+            <Route
+              path="/login"
+              element={<Login setSessionId={setSessionId} />}
+            />
+            <Route path="/signup" element={<SignUp />} />
+            {sessionId && <Route path="/game" element={<Game />} />}
+            <Route path="*" element={<Navigate to="/homepage" replace />} />
+          </Routes>
+        </div>
+      </div>
     </BrowserRouter>
   );
 };
