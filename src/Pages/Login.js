@@ -14,7 +14,7 @@ const Login = ({ setSessionId }) => {
   const navigateToLogin = async () => {
     try {
       const response = await axios.post(
-        "/login",
+        "/api/login",
         {},
         {
           params: {

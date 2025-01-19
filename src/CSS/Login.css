@@ -118,3 +118,43 @@ h1 {
   font-size: 2.2rem;
   color: #ff6b6b;
 }
+
+.password-requirements {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.password-requirements ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.password-requirements li {
+  margin: 5px 0;
+  padding-right: 20px;
+  position: relative;
+  font-size: 14px;
+  color: #666;
+}
+
+.password-requirements li::before {
+  content: "●";
+  position: absolute;
+  right: 0;
+  color: #dc3545;
+}
+
+.password-requirements li.valid::before {
+  color: #28a745;
+}
+
+.invalid {
+  color: #dc3545;
+}
+
+.valid {
+  color: #28a745;
+}

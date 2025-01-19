@@ -1,108 +1,90 @@
-import React, {useState, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../CSS/HomePage.css";
-import {axios} from "../utils/axiosConfig";
+import { axios } from "../utils/axiosConfig";
 import {
-    clearSession,
-    showLogoutSuccess,
-    showLogoutError,
+  clearSession,
+  showLogoutSuccess,
+  showLogoutError,
 } from "../utils/auth";
+import Reviews from "../Components/Reviews";
+import AboutUs from "../Components/AboutUs";
 
-const HomePage = ({setSessionId}) => {
-    const navigate = useNavigate();
-    const [username, setUsername] = useState("");
-  const [searchQuery, setSearchQuery] = useState(""); // ה-state של החיפוש
+const HomePage = ({ setSessionId, sessionId }) => {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
 
-    useEffect(() => {
-        const storedUsername = localStorage.getItem("username");
-        if (storedUsername) {
-            setUsername(storedUsername);
-        }
-    }, []);
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value); // מעדכן את ה-state של החיפוש בכל שינוי
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
+  const handleLogin = () => {
+    navigate("/login");
+  };
+  const handleRegister = () => {
+    navigate("/signup");
   };
 
-    const handleLogout = async () => {
-        try {
-            const response = await axios.post("/logout", null, {
-                withCredentials: true,
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-            });
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post("/api/logout", null, {
+        withCredentials: true,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
 
-            if (response.data.success) {
-                clearSession();
-                localStorage.removeItem("username"); // מחיקת שם המשתמש בהתנתקות
-                setSessionId(null);
-                await showLogoutSuccess();
-                navigate("/login", {replace: true});
-            } else {
-                throw new Error("Logout failed");
-            }
-        } catch (error) {
-            console.error("Logout failed:", error);
-            await showLogoutError();
-        }
-    };
+      if (response.data.success) {
+        clearSession();
+        localStorage.removeItem("username"); // מחיקת שם המשתמש בהתנתקות
+        setSessionId(null);
+        await showLogoutSuccess();
+      } else {
+        throw new Error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+      await showLogoutError();
+    }
+  };
 
-    return (
-        <div className="homepage-container">
-          <div className="navbar">
-            <h1>Welcome to Math is Fun</h1>
-            <div className="button-container">
-              <div className="user-info">
+  return (
+    <div className="homepage-container">
+      <div className="navbar">
+        <h1>Welcome to Math is Fun</h1>
+        <div className="button-container">
+          <div className="user-info">
+            {sessionId ? (
+              <>
                 <span className="welcome-text">Hello, {username}</span>
                 <button className="logout-button" onClick={handleLogout}>
                   Logout
                 </button>
-              </div>
-            </div>
+              </>
+            ) : (
+              <>
+                <button className="logout-button" onClick={handleLogin}>
+                  Login
+                </button>
+                <button className="logout-button" onClick={handleRegister}>
+                  Register
+                </button>
+              </>
+            )}
           </div>
-          <div className="search-container">
-            <div className="group">
-              <svg viewBox="0 0 24 24" aria-hidden="true" className="search-icon">
-                <g>
-                  <path
-                      d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"
-                  ></path>
-                </g>
-              </svg>
-              <input
-                  id="query"
-                  className="input"
-                  type="search"
-                  placeholder="Search..."
-                  name="searchbar"
-                  value={searchQuery} // קושר את ה-input ל-state
-                  onChange={handleSearchChange} // מעדכן את ה-state כשיש שינוי
-              />
-            </div>
-            <button className="cssbuttons-io">
-        <span>
-            <div viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0h24v24H0z" fill="none"></path>
-                <path
-                    d="M24 12l-5.657 5.657-1.414-1.414L21.172 12l-4.243-4.243 1.414-1.414L24 12zM2.828 12l4.243 4.243-1.414 1.414L0 12l5.657-5.657L7.07 7.757 2.828 12zm6.96 9H7.66l6.552-18h2.128L9.788 21z"
-                    fill="currentColor"
-                ></path>
-            </div>
-            Search
-        </span>
-            </button>
-
-
-          </div>
-
-          <h2>
-           CHECK : {searchQuery}
-          </h2>
-
-
         </div>
-    );
+      </div>
+      <div>
+        <AboutUs />
+      </div>
+      <div className="main-content">
+        <Reviews username={username} />
+      </div>
+    </div>
+  );
 };
 
 export default HomePage;

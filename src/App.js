@@ -17,7 +17,7 @@ const App = () => {
       try {
         const currentSession = getSession();
         if (currentSession) {
-          const { data } = await axios.post("/check-session");
+          const { data } = await axios.post("/api/check-session");
           setSessionId(data.success ? currentSession : null);
           if (!data.success) clearSession();
         }
@@ -40,25 +40,17 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {!sessionId ? (
-          <>
-            <Route
-              path="/login"
-              element={<Login setSessionId={setSessionId} />}
-            />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="*" element={<Navigate to="/login" replace />} />
-          </>
-        ) : (
-          <>
-            <Route
-              path="/homepage"
-              element={<HomePage setSessionId={setSessionId} />}
-            />
-            <Route path="/game" element={<Game />} />
-            <Route path="*" element={<Navigate to="/homepage" replace />} />
-          </>
-        )}
+        <Route
+          path="/homepage"
+          element={
+            <HomePage setSessionId={setSessionId} sessionId={sessionId} />
+          }
+        />
+        <Route path="/login" element={<Login setSessionId={setSessionId} />} />
+        <Route path="/signup" element={<SignUp />} />
+        {sessionId && <Route path="/game" element={<Game />} />}
+        <Route path="*" element={<Navigate to="/homepage" replace />} />{" "}
+        {/* Changed from /login to /homepage */}
       </Routes>
     </BrowserRouter>
   );
