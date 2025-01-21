@@ -29,6 +29,10 @@ const HomePage = ({ sessionId }) => {
           customTitle="Another video"
         />
       </div>
+      <div>
+        <p>SessionID: {sessionId} {localStorage.getItem("username")};
+        </p>
+      </div>
     </div>
   );
 };

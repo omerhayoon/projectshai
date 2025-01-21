@@ -9,17 +9,8 @@ import {
 } from "../utils/auth";
 import "../CSS/Navbar.css";
 
-const Navbar = ({ setSessionId, sessionId }) => {
+const Navbar = ({ setSessionId, sessionId, username }) => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
-
-  useEffect(() => {
-    // Update username whenever sessionId changes
-    const storedUsername = localStorage.getItem("username");
-    if (storedUsername) {
-      setUsername(storedUsername);
-    }
-  }, [sessionId]); // Add sessionId as dependency
 
   const handleLogin = () => {
     navigate("/login");
@@ -27,6 +18,9 @@ const Navbar = ({ setSessionId, sessionId }) => {
 
   const handleRegister = () => {
     navigate("/signup");
+  };
+  const handleStatistics = () => {
+    navigate("/statistics");
   };
 
   const handleHome = () => {
@@ -53,8 +47,6 @@ const Navbar = ({ setSessionId, sessionId }) => {
 
       if (response.data.success) {
         clearSession();
-        localStorage.removeItem("username");
-        setUsername(""); // Clear username state
         setSessionId(null);
         await showLogoutSuccess();
         navigate("/homepage");
@@ -77,9 +69,14 @@ const Navbar = ({ setSessionId, sessionId }) => {
           Home
         </button>
         {sessionId && (
-          <button className="nav-button" onClick={handleGame}>
-            Play Game
-          </button>
+          <div>
+            <button className="nav-button" onClick={handleGame}>
+              Play Game
+            </button>
+            <button className="nav-button" onClick={handleStatistics}>
+              Statistic
+            </button>
+          </div>
         )}
         <div className="user-info">
           {sessionId ? (

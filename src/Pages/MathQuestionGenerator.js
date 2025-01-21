@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { axios } from "../utils/axiosConfig";
 
-const MathQuestionGenerator = () => {
+const MathQuestionGenerator = ({ username }) => {
   const [currentType, setCurrentType] = useState("addition");
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState({ x: "", y: "" });
+  const [question, setQuestion] = useState(null);
   const [userAnswer, setUserAnswer] = useState({ x: "", y: "" });
   const [score, setScore] = useState(0);
   const [showSolution, setShowSolution] = useState(false);
-  const [solution, setSolution] = useState("");
   const [hasCheckedAnswer, setHasCheckedAnswer] = useState(false);
+  const [showWrongMessage, setShowWrongMessage] = useState(false);
+  const [showCorrectMessage, setShowCorrectMessage] = useState(false);
 
   const questionTypes = {
     addition: "חיבור",
@@ -19,12 +20,70 @@ const MathQuestionGenerator = () => {
     system: "מערכת משוואות",
   };
 
-  const isAnswerCorrect = () => {
-    if (currentType === "system") {
-      return userAnswer.x === answer.x && userAnswer.y === answer.y;
+  const fetchNewQuestion = async (type) => {
+    try {
+      const response = await axios.get(`/api/questions/generate/${type}`);
+      setQuestion(response.data);
+      setUserAnswer({ x: "", y: "" });
+      setShowSolution(false);
+      setHasCheckedAnswer(false);
+      setShowWrongMessage(false);
+      setShowCorrectMessage(false);
+    } catch (error) {
+      console.error("Error fetching question from fetchNewQuestion:", error);
     }
-    return userAnswer.x === answer.x;
   };
+
+  const checkAnswer = async () => {
+    if (!question) return;
+
+    const isCorrect =
+      question.type === "system"
+        ? userAnswer.x === question.answer.x &&
+          userAnswer.y === question.answer.y
+        : userAnswer.x === question.answer.x;
+
+    try {
+      const response = await axios.post("/api/questions/check", {
+        username: username,
+        subjectType: currentType,
+        userAnswer,
+        correct: isCorrect,
+        question: question.question,
+        correctAnswer: question.answer,
+        solution: question.solution,
+      });
+
+      setHasCheckedAnswer(true);
+
+      if (isCorrect) {
+        setScore(score + 1);
+        setShowCorrectMessage(true);
+        setTimeout(() => {
+          setShowCorrectMessage(false);
+          setQuestion(response.data.nextQuestion);
+          setUserAnswer({ x: "", y: "" });
+          setShowSolution(false);
+          setHasCheckedAnswer(false);
+        }, 1000);
+      } else {
+        setShowWrongMessage(true);
+        setTimeout(() => {
+          setShowWrongMessage(false);
+          setQuestion(response.data.nextQuestion);
+          setUserAnswer({ x: "", y: "" });
+          setShowSolution(false);
+          setHasCheckedAnswer(false);
+        }, 1000);
+      }
+    } catch (error) {
+      console.error("Error checking answer:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchNewQuestion(currentType);
+  }, [currentType]);
 
   const getInputStyle = (value, correctValue) => {
     if (!hasCheckedAnswer || !value) return "border-gray-300";
@@ -33,110 +92,10 @@ const MathQuestionGenerator = () => {
       : "border-red-500 bg-red-50";
   };
 
-  const generateQuestion = (type) => {
-    let newQuestion = "";
-    let correctAnswer = { x: "", y: "" };
-    let solutionSteps = "";
-
-    switch (type) {
-      case "addition":
-        const num1 = Math.floor(Math.random() * 20);
-        const num2 = Math.floor(Math.random() * 20);
-        newQuestion = `${num1} + ${num2} = ?`;
-        correctAnswer = { x: (num1 + num2).toString(), y: "" };
-        solutionSteps = `${num1} + ${num2} = ${correctAnswer.x}
-          חיבור פשוט של שני המספרים`;
-        break;
-
-      case "subtraction":
-        const minuend = Math.floor(Math.random() * 20);
-        const subtrahend = Math.floor(Math.random() * minuend);
-        newQuestion = `${minuend} - ${subtrahend} = ?`;
-        correctAnswer = { x: (minuend - subtrahend).toString(), y: "" };
-        solutionSteps = `${minuend} - ${subtrahend} = ${correctAnswer.x}
-          חיסור פשוט של שני המספרים`;
-        break;
-
-      case "multiplication":
-        const factor1 = Math.floor(Math.random() * 10) + 1;
-        const factor2 = Math.floor(Math.random() * 10) + 1;
-        newQuestion = `${factor1} × ${factor2} = ?`;
-        correctAnswer = { x: (factor1 * factor2).toString(), y: "" };
-        solutionSteps = `${factor1} × ${factor2} = ${correctAnswer.x}
-          כפל פשוט של שני המספרים`;
-        break;
-
-      case "division":
-        const divisor = Math.floor(Math.random() * 10) + 1;
-        const product = divisor * (Math.floor(Math.random() * 10) + 1);
-        newQuestion = `${product} ÷ ${divisor} = ?`;
-        correctAnswer = { x: (product / divisor).toString(), y: "" };
-        solutionSteps = `${product} ÷ ${divisor} = ${correctAnswer.x}
-          חילוק פשוט של המספרים`;
-        break;
-
-      case "linear":
-        const a = Math.floor(Math.random() * 5) + 1;
-        const b = Math.floor(Math.random() * 20);
-        const result = Math.floor(Math.random() * 50);
-        newQuestion = `${a}x + ${b} = ${result}`;
-        correctAnswer = { x: ((result - b) / a).toString(), y: "" };
-        solutionSteps = `נתון: ${a}x + ${b} = ${result}
-          
-          נחסר ${b} משני האגפים:
-          ${a}x = ${result - b}
-          
-          נחלק ב-${a} את שני האגפים:
-          x = ${correctAnswer.x}`;
-        break;
-
-      case "system":
-        const x = Math.floor(Math.random() * 5) + 1;
-        const y = Math.floor(Math.random() * 5) + 1;
-        newQuestion = `
-          2x + y = ${2 * x + y}
-          x + y = ${x + y}
-        `;
-        correctAnswer = { x: x.toString(), y: y.toString() };
-        solutionSteps = `נתון:
-          2x + y = ${2 * x + y}  (1)
-          x + y = ${x + y}     (2)
-          
-          נחסר את משוואה (2) ממשוואה (1):
-          x = ${x}
-          
-          נציב את x במשוואה (2):
-          ${x} + y = ${x + y}
-          y = ${y}
-          
-          התשובה: x = ${x}, y = ${y}`;
-        break;
-    }
-
-    setQuestion(newQuestion);
-    setAnswer(correctAnswer);
-    setSolution(solutionSteps);
-    setShowSolution(false);
-    setUserAnswer({ x: "", y: "" });
-    setHasCheckedAnswer(false);
-  };
-
-  const checkAnswer = () => {
-    setHasCheckedAnswer(true);
-    if (isAnswerCorrect()) {
-      setScore(score + 1);
-      setTimeout(() => {
-        generateQuestion(currentType);
-      }, 1000); // מעבר לשאלה הבאה אחרי שניה
-    }
-  };
-
-  useEffect(() => {
-    generateQuestion(currentType);
-  }, [currentType]);
-
   const renderAnswerInputs = () => {
-    if (currentType === "system") {
+    if (!question) return null;
+
+    if (question.type === "system" || currentType === "system") {
       return (
         <div className="flex flex-col gap-4">
           <div className="relative w-full">
@@ -150,18 +109,20 @@ const MathQuestionGenerator = () => {
                 }
                 className={`w-full p-3 border-2 rounded text-right text-lg transition-colors rtl ${getInputStyle(
                   userAnswer.x,
-                  answer.x
+                  question.answer.x
                 )}`}
-                placeholder="הכנס ערך ל-X"
+                placeholder="X"
               />
             </div>
             {hasCheckedAnswer && userAnswer.x && (
               <span
                 className={`absolute left-2 top-1/2 -translate-y-1/2 text-xl ${
-                  userAnswer.x === answer.x ? "text-green-500" : "text-red-500"
+                  userAnswer.x === question.answer.x
+                    ? "text-green-500"
+                    : "text-red-500"
                 }`}
               >
-                {userAnswer.x === answer.x ? "✓" : "✗"}
+                {userAnswer.x === question.answer.x ? "✓" : "✗"}
               </span>
             )}
           </div>
@@ -176,24 +137,28 @@ const MathQuestionGenerator = () => {
                 }
                 className={`w-full p-3 border-2 rounded text-right text-lg transition-colors rtl ${getInputStyle(
                   userAnswer.y,
-                  answer.y
+                  question.answer.y
                 )}`}
-                placeholder="הכנס ערך ל-Y"
+                placeholder="Y"
               />
             </div>
             {hasCheckedAnswer && userAnswer.y && (
               <span
                 className={`absolute left-2 top-1/2 -translate-y-1/2 text-xl ${
-                  userAnswer.y === answer.y ? "text-green-500" : "text-red-500"
+                  userAnswer.y === question.answer.y
+                    ? "text-green-500"
+                    : "text-red-500"
                 }`}
               >
-                {userAnswer.y === answer.y ? "✓" : "✗"}
+                {userAnswer.y === question.answer.y ? "✓" : "✗"}
               </span>
             )}
           </div>
         </div>
       );
+    } else {
     }
+
     return (
       <div className="relative w-full">
         <input
@@ -201,18 +166,20 @@ const MathQuestionGenerator = () => {
           value={userAnswer.x}
           onChange={(e) => setUserAnswer({ ...userAnswer, x: e.target.value })}
           placeholder="הכנס את תשובתך"
-          className={`w-full p-3 border-2 rounded text-right text-lg transition-colors ${getInputStyle(
+          className={`w-full p-3 border-2 rounded text-right text-lg transition-colors rtl ${getInputStyle(
             userAnswer.x,
-            answer.x
+            question?.answer?.x
           )}`}
         />
         {hasCheckedAnswer && userAnswer.x && (
           <span
             className={`absolute left-2 top-1/2 -translate-y-1/2 text-xl ${
-              userAnswer.x === answer.x ? "text-green-500" : "text-red-500"
+              userAnswer.x === question?.answer?.x
+                ? "text-green-500"
+                : "text-red-500"
             }`}
           >
-            {userAnswer.x === answer.x ? "✓" : "✗"}
+            {userAnswer.x === question?.answer?.x ? "✓" : "✗"}
           </span>
         )}
       </div>
@@ -240,11 +207,21 @@ const MathQuestionGenerator = () => {
         </div>
 
         <div className="text-2xl text-center py-4 whitespace-pre-line">
-          {question}
+          {question?.question}
         </div>
 
         <div className="mb-4">
           {renderAnswerInputs()}
+          {showWrongMessage && (
+            <div className="mt-2 text-center font-bold text-red-500 text-xl">
+              לא נכון!
+            </div>
+          )}
+          {showCorrectMessage && (
+            <div className="mt-2 text-center font-bold text-green-500 text-xl">
+              נכון!
+            </div>
+          )}
           <button
             onClick={checkAnswer}
             className="w-full mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
@@ -262,13 +239,15 @@ const MathQuestionGenerator = () => {
           </button>
         </div>
 
-        {showSolution && (
+        {showSolution && question?.solution && (
           <div className="mt-4 p-4 bg-gray-100 rounded whitespace-pre-line text-right">
-            {solution}
+            {question.solution}
           </div>
         )}
 
         <div className="text-center mt-4">ניקוד: {score}</div>
+        <p>{userAnswer.x}</p>
+        {userAnswer && console.log(userAnswer)}
       </div>
     </div>
   );
