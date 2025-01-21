@@ -7,7 +7,8 @@ import Navbar from "./Components/Navbar";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
 import HomePage from "./Pages/HomePage";
-import Game from "./Pages/Game";
+import MathQuestionGenerator from "./Pages/MathQuestionGenerator";
+import LearningVideos from "./Pages/LearningVideos ";
 
 const App = () => {
   const [sessionId, setSessionId] = useState(null);
@@ -50,12 +51,15 @@ const App = () => {
                 <HomePage setSessionId={setSessionId} sessionId={sessionId} />
               }
             />
+            <Route path="LearningVideos" element={<LearningVideos />} />
             <Route
               path="/login"
               element={<Login setSessionId={setSessionId} />}
             />
             <Route path="/signup" element={<SignUp />} />
-            {sessionId && <Route path="/game" element={<Game />} />}
+            {sessionId && (
+              <Route path="/game" element={<MathQuestionGenerator />} />
+            )}
             <Route path="*" element={<Navigate to="/homepage" replace />} />
           </Routes>
         </div>

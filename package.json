@@ -6,6 +6,7 @@
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
     "cra-template": "1.2.0",
+    "lucide-react": "^0.473.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.7",
     "react-dom": "^18.3.1",
@@ -14,6 +15,7 @@
     "react-router-dom": "^7.1.1",
     "react-scripts": "5.0.1",
     "react-toastify": "^11.0.2",
+    "styled-components": "^6.1.14",
     "sweetalert2": "^11.15.10",
     "universal-cookie": "^7.2.2",
     "web-vitals": "^4.2.4"
