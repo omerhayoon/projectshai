@@ -15,8 +15,7 @@ const HomePage = ({ sessionId }) => {
   }, []);
 
   return (
-    <div className="homepage-container">
-      <div>
+    <div className="homepage-container"><div>
         <AboutUs />
       </div>
       <div className="main-content">

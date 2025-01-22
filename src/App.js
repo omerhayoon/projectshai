@@ -10,10 +10,11 @@ import HomePage from "./Pages/HomePage";
 import MathQuestionGenerator from "./Pages/MathQuestionGenerator";
 import LearningVideos from "./Pages/LearningVideos";
 import UserStatistics from "./Pages/UserStatistics";
+import Profile from "./Pages/Profile"; // Import the Profile component
 
 const App = () => {
   const [sessionId, setSessionId] = useState(null);
-  const [username, setUsername] = useState(null); // New state to store username
+  const [username, setUsername] = useState(null); // State to store username
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -25,6 +26,7 @@ const App = () => {
           if (data.success) {
             setSessionId(currentSession);
             setUsername(data.username); // Set the username from the server
+            console.log(data, "user data");
           } else {
             clearSession();
             setSessionId(null);
@@ -49,49 +51,52 @@ const App = () => {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <BrowserRouter>
-      <div className="app-container">
-        <Navbar
-          setSessionId={setSessionId}
-          sessionId={sessionId}
-          username={username}
-        />{" "}
-        {/* Pass the username to Navbar */}
-        <div className="main-content">
-          <Routes>
-            <Route
-              path="/homepage"
-              element={
-                <HomePage
-                  setSessionId={setSessionId}
-                  sessionId={sessionId}
-                  username={username}
-                />
-              } // Pass username to HomePage
-            />
-            <Route path="LearningVideos" element={<LearningVideos />} />
-            <Route
-              path="/login"
-              element={<Login setSessionId={setSessionId} />}
-            />
-            <Route path="/signup" element={<SignUp />} />
-            {sessionId && (
-              <>
-                <Route
-                  path="/game"
-                  element={<MathQuestionGenerator username={username} />}
-                />
-                <Route
-                  path="/statistics"
-                  element={<UserStatistics username={username} />}
-                />
-              </>
-            )}
-            <Route path="*" element={<Navigate to="/homepage" replace />} />
-          </Routes>
+      <BrowserRouter>
+        <div className="app-container">
+          <Navbar
+              setSessionId={setSessionId}
+              sessionId={sessionId}
+              username={username}
+          />{" "}
+          <div className="main-content">
+            <Routes>
+              <Route
+                  path="/homepage"
+                  element={
+                    <HomePage
+                        setSessionId={setSessionId}
+                        sessionId={sessionId}
+                        username={username}
+                    />
+                  }
+              />
+              <Route path="LearningVideos" element={<LearningVideos />} />
+              <Route
+                  path="/login"
+                  element={<Login setSessionId={setSessionId} />}
+              />
+              <Route path="/signup" element={<SignUp />} />
+              {sessionId && (
+                  <>
+                    <Route
+                        path="/game"
+                        element={<MathQuestionGenerator username={username} />}
+                    />
+                    <Route
+                        path="/statistics"
+                        element={<UserStatistics username={username} />}
+                    />
+                    <Route
+                        path="/profile"
+                        element={<Profile username={username} />}
+                    /> {/* Profile route */}
+                  </>
+              )}
+              <Route path="*" element={<Navigate to="/homepage" replace />} />
+            </Routes>
+          </div>
         </div>
-      </div>
-    </BrowserRouter>
+      </BrowserRouter>
   );
 };
 

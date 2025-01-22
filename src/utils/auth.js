@@ -39,10 +39,10 @@ export const showLogoutError = () => {
   });
 };
 
-export const showLoginSuccess = (username) => {
+export const showLoginSuccess = (name) => {
   return Swal.fire({
     icon: "success",
-    title: "Welcome " + username,
+    title: "Welcome " + name,
     text: "You have successfully logged in!",
     confirmButtonColor: "#4caf50",
     background: "#f4f4f4",

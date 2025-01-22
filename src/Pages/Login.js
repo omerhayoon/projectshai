@@ -6,6 +6,7 @@ import { axios } from "../utils/axiosConfig";
 import { setSession, showLoginSuccess, showLoginError } from "../utils/auth";
 
 const Login = ({ setSessionId }) => {
+  const [name, setName] = useState(""); // הוספת state לשדה name
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -14,23 +15,27 @@ const Login = ({ setSessionId }) => {
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-        "/api/login",
-        {},
-        {
-          params: {
-            username: username,
-            password: password,
-          },
-          withCredentials: true,
-        }
+          "/api/login",
+          {},
+          {
+            params: {
+              username: username,
+              password: password,
+            },
+            withCredentials: true,
+          }
       );
 
       if (response.data?.success) {
-        setSession(response.data.sessionId);
-        setSessionId(response.data.sessionId);
-        localStorage.setItem("username", username);
+        const { sessionId, name } = response.data;
+        setSession(sessionId);
+        setSessionId(sessionId);
 
-        await showLoginSuccess(username);
+        // שמור את השם ב-localStorage
+        localStorage.setItem("username", username);
+        localStorage.setItem("name", name);
+
+        await showLoginSuccess(name);
         navigate("/homepage", { replace: true });
       } else {
         await showLoginError();
@@ -40,6 +45,7 @@ const Login = ({ setSessionId }) => {
       await showLoginError();
     }
   };
+
 
   const navigateToSignUp = () => {
     navigate("/signup", { replace: true });

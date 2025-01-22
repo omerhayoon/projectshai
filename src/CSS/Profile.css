@@ -1,0 +1,132 @@
+/* src/CSS/profile.css */
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5; /* רקע עדין */
+    min-height: 100vh; /* גובה מלא של הדף */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.profile-card {
+    background-color: #ffffff; /* רקע כרטיס */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* צל לכרטיס */
+    padding: 20px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px); /* אפקט ריחוף */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* צל חזק יותר */
+}
+
+.profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    object-fit: cover;
+    border: 3px solid #0078d4; /* מסגרת לתמונה */
+}
+
+.profile-username {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333333; /* טקסט כהה */
+    margin: 10px 0;
+}
+
+.profile-bio {
+    font-size: 16px;
+    color: #555555; /* אפור עדין */
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.profile-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.profile-button {
+    background-color: #0078d4; /* כחול מודרני */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.profile-button:hover {
+    background-color: #005bb5; /* גוון כהה יותר */
+    transform: scale(1.05); /* הגדלה קטנה */
+}
+
+.profile-button:active {
+    transform: scale(0.95); /* לחיצה */
+}
+
+/* התאמה למובייל */
+@media (max-width: 480px) {
+    .profile-card {
+        padding: 15px;
+    }
+
+    .profile-username {
+        font-size: 20px;
+    }
+
+    .profile-bio {
+        font-size: 14px;
+    }
+
+    .profile-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    /* src/CSS/Profile.css */
+
+    .profile-background {
+        background-color: #f4f7f6;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        margin: 40px auto;
+        text-align: center;
+    }
+
+    .profile-background h1 {
+        font-size: 2rem;
+        color: #007bff;
+        margin-bottom: 20px;
+    }
+
+    .profile-details {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        text-align: left;
+        display: inline-block;
+        width: 100%;
+        padding-left: 20px;
+    }
+
+    .profile-details p {
+        margin-bottom: 15px;
+    }
+
+    .profile-details strong {
+        color: #333;
+    }
+
+
+}
