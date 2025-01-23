@@ -1,11 +1,11 @@
 import React from "react";
 import { User, Mail, Shield } from "lucide-react";
 
-const Profile = ({ user }) => {
+const UserProfile = ({ user }) => {
   const { username, name, email } = user;
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white shadow-lg rounded-lg p-6 mt-30">
+    <div className="w-full max-w-md mx-auto bg-white shadow-lg rounded-lg p-6">
       <h2 className="text-2xl font-bold text-center mb-6">Profile</h2>
 
       <div className="space-y-4">
@@ -37,4 +37,4 @@ const Profile = ({ user }) => {
   );
 };
 
-export default Profile;
+export default UserProfile;

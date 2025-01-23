@@ -10,93 +10,102 @@ import HomePage from "./Pages/HomePage";
 import MathQuestionGenerator from "./Pages/MathQuestionGenerator";
 import LearningVideos from "./Pages/LearningVideos";
 import UserStatistics from "./Pages/UserStatistics";
-import Profile from "./Pages/Profile"; // Import the Profile component
+import UserProfile from "./Pages/UserProfile";
+import Profile from "./Pages/Profile";
 
 const App = () => {
   const [sessionId, setSessionId] = useState(null);
-  const [username, setUsername] = useState(null); // State to store username
+  const [username, setUsername] = useState(null);
+  const [name, setName] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [profileData, setProfileData] = useState(null);
+  //this is still working
   useEffect(() => {
     const checkSession = async () => {
       try {
         const currentSession = getSession();
-        if (currentSession) {
-          const { data } = await axios.post("/api/check-session");
-          if (data.success) {
-            setSessionId(currentSession);
-            setUsername(data.username); // Set the username from the server
-            console.log(data, "user data");
-          } else {
-            clearSession();
-            setSessionId(null);
-            setUsername(null);
-          }
+        if (!currentSession) {
+          clearSession();
+          setSessionId(null);
+          setUsername(null);
+          return;
         }
-      } catch (error) {
-        console.error("Session check failed:", error);
-        clearSession();
-        setSessionId(null);
-        setUsername(null);
+
+        setSessionId(currentSession);
+        const { data } = await axios.post("/api/check-session");
+        if (data.success) {
+          setUsername(data.username);
+          setName(data.name);
+          setProfileData(data);
+        } else {
+          clearSession();
+          setSessionId(null);
+          setUsername(null);
+          setName(null);
+          setProfileData(null);
+        }
       } finally {
         setIsLoading(false);
       }
     };
 
     checkSession();
-    const interval = setInterval(checkSession, 300000); // Check session every 5 minutes
+    const interval = setInterval(checkSession, 300000);
     return () => clearInterval(interval);
-  }, []);
+  }, [sessionId]); // Add sessionId dependency
 
   if (isLoading) return <div>Loading...</div>;
 
   return (
-      <BrowserRouter>
-        <div className="app-container">
-          <Navbar
-              setSessionId={setSessionId}
-              sessionId={sessionId}
-              username={username}
-          />{" "}
-          <div className="main-content">
-            <Routes>
-              <Route
-                  path="/homepage"
-                  element={
-                    <HomePage
-                        setSessionId={setSessionId}
-                        sessionId={sessionId}
-                        username={username}
-                    />
-                  }
-              />
-              <Route path="LearningVideos" element={<LearningVideos />} />
-              <Route
-                  path="/login"
-                  element={<Login setSessionId={setSessionId} />}
-              />
-              <Route path="/signup" element={<SignUp />} />
-              {sessionId && (
-                  <>
-                    <Route
-                        path="/game"
-                        element={<MathQuestionGenerator username={username} />}
-                    />
-                    <Route
-                        path="/statistics"
-                        element={<UserStatistics username={username} />}
-                    />
-                    <Route
-                        path="/profile"
-                        element={<Profile username={username} />}
-                    /> {/* Profile route */}
-                  </>
-              )}
-              <Route path="*" element={<Navigate to="/homepage" replace />} />
-            </Routes>
-          </div>
-        </div>
-      </BrowserRouter>
+    <BrowserRouter>
+      <div className="min-h-screen bg-gray-50">
+        <Navbar
+          setSessionId={setSessionId}
+          sessionId={sessionId}
+          username={username}
+          name={name}
+          className="fixed top-0 left-0 right-0 z-50 bg-[#1a1a2e] shadow-lg"
+        />
+        <main className="pt-20 px-6 mx-auto max-w-7xl">
+          <Routes>
+            <Route
+              path="/homepage"
+              element={
+                <HomePage
+                  setSessionId={setSessionId}
+                  sessionId={sessionId}
+                  username={username}
+                  name={name}
+                />
+              }
+            />
+            <Route path="/learning-videos" element={<LearningVideos />} />
+            <Route
+              path="/login"
+              element={<Login setSessionId={setSessionId} />}
+            />
+            <Route path="/signup" element={<SignUp />} />
+            {sessionId && (
+              <>
+                <Route
+                  path="/game"
+                  element={<MathQuestionGenerator username={username} />}
+                />
+                <Route
+                  path="/statistics"
+                  element={<UserStatistics username={username} />}
+                />
+                <Route
+                  path="/profile"
+                  element={<UserProfile user={profileData} />}
+                />
+              </>
+            )}
+            <Route path="*" element={<Navigate to="/homepage" replace />} />
+          </Routes>
+        </main>
+      </div>
+    </BrowserRouter>
   );
 };
 

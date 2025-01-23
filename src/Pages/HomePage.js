@@ -15,11 +15,12 @@ const HomePage = ({ sessionId }) => {
   }, []);
 
   return (
-    <div className="homepage-container"><div>
+    <div className="homepage-container">
+      <div>
         <AboutUs />
       </div>
       <div className="main-content">
-        <Reviews username={username} />
+        {/* <Reviews username={username} /> */}
       </div>
       <div>
         <Video
@@ -29,7 +30,8 @@ const HomePage = ({ sessionId }) => {
         />
       </div>
       <div>
-        <p>SessionID: {sessionId} {localStorage.getItem("username")};
+        <p>
+          SessionID: {sessionId} {localStorage.getItem("username")};
         </p>
       </div>
     </div>

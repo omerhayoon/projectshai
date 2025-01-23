@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { axios } from "../utils/axiosConfig";
+import MathLayout from "../Components/MathLayout";
+import { questionTypes } from "../utils/constants";
 
 const MathQuestionGenerator = ({ username }) => {
   const [currentType, setCurrentType] = useState("addition");
@@ -11,15 +13,6 @@ const MathQuestionGenerator = ({ username }) => {
   const [showWrongMessage, setShowWrongMessage] = useState(false);
   const [showCorrectMessage, setShowCorrectMessage] = useState(false);
 
-  const questionTypes = {
-    addition: "חיבור",
-    subtraction: "חיסור",
-    multiplication: "כפל",
-    division: "חילוק",
-    linear: "משוואה עם נעלם אחד",
-    system: "מערכת משוואות",
-  };
-
   const fetchNewQuestion = async (type) => {
     try {
       const response = await axios.get(`/api/questions/generate/${type}`);
@@ -30,9 +23,13 @@ const MathQuestionGenerator = ({ username }) => {
       setShowWrongMessage(false);
       setShowCorrectMessage(false);
     } catch (error) {
-      console.error("Error fetching question from fetchNewQuestion:", error);
+      console.error("Error fetching question:", error);
     }
   };
+
+  useEffect(() => {
+    fetchNewQuestion(currentType);
+  }, [currentType]);
 
   const checkAnswer = async () => {
     if (!question) return;
@@ -80,10 +77,6 @@ const MathQuestionGenerator = ({ username }) => {
       console.error("Error checking answer:", error);
     }
   };
-
-  useEffect(() => {
-    fetchNewQuestion(currentType);
-  }, [currentType]);
 
   const getInputStyle = (value, correctValue) => {
     if (!hasCheckedAnswer || !value) return "border-gray-300";
@@ -156,7 +149,6 @@ const MathQuestionGenerator = ({ username }) => {
           </div>
         </div>
       );
-    } else {
     }
 
     return (
@@ -186,30 +178,16 @@ const MathQuestionGenerator = ({ username }) => {
     );
   };
 
-  return (
-    <div className="mt-20">
-      <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md rtl">
-        <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2 text-right">
-            בחר סוג שאלה:
-          </label>
-          <select
-            className="w-full p-2 border rounded text-right"
-            value={currentType}
-            onChange={(e) => setCurrentType(e.target.value)}
-          >
-            {Object.entries(questionTypes).map(([type, label]) => (
-              <option key={type} value={type}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </div>
+  const questionContent = (
+    <div className="h-full p-6 bg-white rounded-lg shadow-lg flex flex-col">
+      <div className="text-3xl font-bold text-center mb-4 text-blue-500">
+        {questionTypes[currentType]}
+      </div>
+      <div className="text-2xl text-center py-4 whitespace-pre-line">
+        {question?.question}
+      </div>
 
-        <div className="text-2xl text-center py-4 whitespace-pre-line">
-          {question?.question}
-        </div>
-
+      <div className="flex-1 flex flex-col justify-center">
         <div className="mb-4">
           {renderAnswerInputs()}
           {showWrongMessage && (
@@ -222,22 +200,21 @@ const MathQuestionGenerator = ({ username }) => {
               נכון!
             </div>
           )}
-          <button
-            onClick={checkAnswer}
-            className="w-full mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            בדוק תשובה
-          </button>
         </div>
 
-        <div className="mb-4">
-          <button
-            onClick={() => setShowSolution(!showSolution)}
-            className="w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-          >
-            {showSolution ? "הסתר פתרון" : "הצג פתרון"}
-          </button>
-        </div>
+        <button
+          onClick={checkAnswer}
+          className="w-full mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          בדוק תשובה
+        </button>
+
+        <button
+          onClick={() => setShowSolution(!showSolution)}
+          className="w-full mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+        >
+          {showSolution ? "הסתר פתרון" : "הצג פתרון"}
+        </button>
 
         {showSolution && question?.solution && (
           <div className="mt-4 p-4 bg-gray-100 rounded whitespace-pre-line text-right">
@@ -246,10 +223,14 @@ const MathQuestionGenerator = ({ username }) => {
         )}
 
         <div className="text-center mt-4">ניקוד: {score}</div>
-        <p>{userAnswer.x}</p>
-        {userAnswer && console.log(userAnswer)}
       </div>
     </div>
+  );
+
+  return (
+    <MathLayout currentType={currentType} setCurrentType={setCurrentType}>
+      {questionContent}
+    </MathLayout>
   );
 };
 

@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import "../CSS/Login.css";
 import { axios } from "../utils/axiosConfig";
 import { setSession, showLoginSuccess, showLoginError } from "../utils/auth";
+import { set } from "react-hook-form";
 
 const Login = ({ setSessionId }) => {
   const [name, setName] = useState(""); // הוספת state לשדה name
@@ -15,27 +16,21 @@ const Login = ({ setSessionId }) => {
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-          "/api/login",
-          {},
-          {
-            params: {
-              username: username,
-              password: password,
-            },
-            withCredentials: true,
-          }
+        "/api/login",
+        {},
+        {
+          params: { username, password },
+          withCredentials: true,
+        }
       );
 
       if (response.data?.success) {
         const { sessionId, name } = response.data;
         setSession(sessionId);
-        setSessionId(sessionId);
-
-        // שמור את השם ב-localStorage
-        localStorage.setItem("username", username);
-        localStorage.setItem("name", name);
-
-        await showLoginSuccess(name);
+        setSessionId(sessionId); // This will trigger checkSession in App.js
+        console.log(response.data.name);
+        setName(response.data.name);
+        await showLoginSuccess(response.data.name);
         navigate("/homepage", { replace: true });
       } else {
         await showLoginError();
@@ -45,8 +40,6 @@ const Login = ({ setSessionId }) => {
       await showLoginError();
     }
   };
-
-
   const navigateToSignUp = () => {
     navigate("/signup", { replace: true });
   };
