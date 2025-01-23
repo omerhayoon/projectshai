@@ -13,6 +13,10 @@ import { IoStatsChartSharp } from "react-icons/io5";
 import { IoLogoGameControllerB } from "react-icons/io";
 import { IoHome } from "react-icons/io5";
 import { CiLogout } from "react-icons/ci";
+import { PiMathOperationsFill } from "react-icons/pi";
+
+
+
 
 const Navbar = ({ setSessionId, sessionId, username, name }) => {
   const navigate = useNavigate();
@@ -68,81 +72,84 @@ const Navbar = ({ setSessionId, sessionId, username, name }) => {
   };
 
   return (
-    <div className="navbar">
-      <h1 onClick={handleHome} style={{ cursor: "pointer" }}>
-        Welcome to Math is Fun
-      </h1>
-      <div
-        className="nav-buttons"
-        style={{ display: "flex", alignItems: "center", gap: "10px" }}
-      >
-        <button
-          className="nav-button"
-          onClick={handleHome}
-          style={{ display: "flex", alignItems: "center", gap: "5px" }}
+      <div className="navbar">
+        <h1 onClick={handleHome} style={{cursor: "pointer", display: "flex", alignItems: "center", gap: "20px"}}>
+          Welcome to Math is Fun
+          <PiMathOperationsFill/>
+        </h1>
+
+
+        <div
+            className="nav-buttons"
+            style={{display: "flex", alignItems: "center", gap: "10px"}}
         >
-          Home
-          <IoHome />
-        </button>
-
-        {sessionId && (
-          <>
-            <button
+          <button
               className="nav-button"
-              onClick={handleGame}
-              style={{ display: "flex", alignItems: "center", gap: "5px" }}
-            >
-              Play Game
-              <IoLogoGameControllerB />
-            </button>
+              onClick={handleHome}
+              style={{display: "flex", alignItems: "center", gap: "5px"}}
+          >
+            Home
+            <IoHome/>
+          </button>
 
-            <button className="nav-button" onClick={handleStatistics}>
+          {sessionId && (
+              <>
+                <button
+                    className="nav-button"
+                    onClick={handleGame}
+                    style={{display: "flex", alignItems: "center", gap: "5px"}}
+                >
+                  Play Game
+                  <IoLogoGameControllerB/>
+                </button>
+
+                <button className="nav-button" onClick={handleStatistics}>
               <span
-                style={{ display: "flex", alignItems: "center", gap: "5px" }}
+                  style={{display: "flex", alignItems: "center", gap: "5px"}}
               >
                 Statistic
-                <IoStatsChartSharp />
+                <IoStatsChartSharp/>
               </span>
-            </button>
-            <button
-              className="nav-button"
-              onClick={handelProfile}
-              style={{ display: "flex", alignItems: "center", gap: "5px" }}
-            >
-              <FaUser />
-              <span>Profile</span>
-            </button>
-          </>
-        )}
-        <div
-          className="user-info"
-          style={{ display: "flex", alignItems: "center", gap: "10px" }}
-        >
-          {sessionId ? (
-            <>
-              <span className="welcome-text">Hello, {name}</span>
-              <button
-                className="nav-button"
-                onClick={handleLogout}
-                style={{ display: "flex", alignItems: "center", gap: "5px" }}
-              >
-                Logout
-                <CiLogout />
-              </button>
-            </>
-          ) : (
-            <>
-              <button className="nav-button" onClick={handleLogin}>
-                Login
-              </button>
-              <button className="nav-button" onClick={handleRegister}>
-                Register
-              </button>
-            </>
+                </button>
+                <button
+                    className="nav-button"
+                    onClick={handelProfile}
+                    style={{display: "flex", alignItems: "center", gap: "5px"}}
+                >
+                  <FaUser/>
+                  <span>Profile</span>
+                </button>
+              </>
           )}
+          <div
+              className="user-info"
+              style={{display: "flex", alignItems: "center", gap: "10px"}}
+          >
+            {sessionId ? (
+                <>
+                  <span className="welcome-text">Hello, {name}</span>
+                  <button
+                      className="nav-button"
+                      onClick={handleLogout}
+                      style={{display: "flex", alignItems: "center", gap: "5px"}}
+                  >
+                    Logout
+                    <CiLogout/>
+                  </button>
+                </>
+            ) : (
+                <>
+                  <button className="nav-button" onClick={handleLogin}>
+                    Login
+                  </button>
+                  <button className="nav-button" onClick={handleRegister}>
+                    Register
+                  </button>
+                </>
+            )}
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 

@@ -23,15 +23,15 @@ const HomePage = ({ sessionId }) => {
         {/* <Reviews username={username} /> */}
       </div>
       <div>
-        <Video
-          url="https://www.youtube.com/watch?v=ewNSCHsoUbc"
-          title="Learn Math"
-          customTitle="Another video"
-        />
+        {/*<Video*/}
+        {/*  url="https://www.youtube.com/watch?v=ewNSCHsoUbc"*/}
+        {/*  title="Learn Math"*/}
+        {/*  customTitle="Another video"*/}
+        {/*/>*/}
       </div>
       <div>
         <p>
-          SessionID: {sessionId} {localStorage.getItem("username")};
+          {/*SessionID: {sessionId} {localStorage.getItem("username")};*/}
         </p>
       </div>
     </div>
