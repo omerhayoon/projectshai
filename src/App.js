@@ -11,7 +11,6 @@ import MathQuestionGenerator from "./Pages/MathQuestionGenerator";
 import LearningVideos from "./Pages/LearningVideos";
 import UserStatistics from "./Pages/UserStatistics";
 import UserProfile from "./Pages/UserProfile";
-import Profile from "./Pages/Profile";
 
 const App = () => {
   const [sessionId, setSessionId] = useState(null);
@@ -95,6 +94,7 @@ const App = () => {
                   path="/statistics"
                   element={<UserStatistics username={username} />}
                 />
+
                 <Route
                   path="/profile"
                   element={<UserProfile user={profileData} />}

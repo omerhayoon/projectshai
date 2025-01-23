@@ -14,6 +14,8 @@ import { IoLogoGameControllerB } from "react-icons/io";
 import { IoHome } from "react-icons/io5";
 import { CiLogout } from "react-icons/ci";
 import { PiMathOperationsFill } from "react-icons/pi";
+import { MdOutlineOndemandVideo } from "react-icons/md";
+
 
 
 
@@ -45,6 +47,9 @@ const Navbar = ({ setSessionId, sessionId, username, name }) => {
   };
   const handelProfile = () => {
     navigate("/profile", { state: { username, sessionId } }); // מעביר את שם המשתמש ומצב ה-session
+  };
+  const handleVideos = () => {
+
   };
 
   const handleLogout = async () => {
@@ -83,14 +88,14 @@ const Navbar = ({ setSessionId, sessionId, username, name }) => {
             className="nav-buttons"
             style={{display: "flex", alignItems: "center", gap: "10px"}}
         >
-          <button
-              className="nav-button"
-              onClick={handleHome}
-              style={{display: "flex", alignItems: "center", gap: "5px"}}
-          >
-            Home
-            <IoHome/>
-          </button>
+          {/*<button*/}
+          {/*    className="nav-button"*/}
+          {/*    onClick={handleHome}*/}
+          {/*    style={{display: "flex", alignItems: "center", gap: "5px"}}*/}
+          {/*>*/}
+          {/*  Home*/}
+          {/*  <IoHome/>*/}
+          {/*</button>*/}
 
           {sessionId && (
               <>
@@ -127,7 +132,16 @@ const Navbar = ({ setSessionId, sessionId, username, name }) => {
           >
             {sessionId ? (
                 <>
-                  <span className="welcome-text">Hello, {name}</span>
+                  <button
+                      className="nav-button"
+                      style={{display: "flex", alignItems: "center", gap: "5px"
+                      }}
+                      onClick={handleVideos}
+                  >
+                    Videos
+                    <MdOutlineOndemandVideo/>
+                  </button>
+
                   <button
                       className="nav-button"
                       onClick={handleLogout}
@@ -136,6 +150,9 @@ const Navbar = ({ setSessionId, sessionId, username, name }) => {
                     Logout
                     <CiLogout/>
                   </button>
+
+                  <span className="welcome-text">Hello, {name}</span>
+
                 </>
             ) : (
                 <>
