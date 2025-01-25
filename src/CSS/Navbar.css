@@ -1,8 +1,8 @@
 .navbar {
   display: flex;
-  flex-direction: column; /* שינוי לסידור אנכי */
-  align-items: center; /* מיקום הכפתורים והכותרת במרכז */
-  justify-content: center; /* מיקום הכפתורים והכותרת במרכז אנכית */
+  flex-direction: row; /* שינוי לסידור אופקי */
+  align-items: center; /* יישור הכפתורים והכותרת אנכית */
+  justify-content: space-between; /* הפרדה בין הכותרת לכפתורים */
   background-color: #1a1a2e;
   color: white;
   padding: 15px 30px;
@@ -16,19 +16,18 @@
 }
 
 .navbar h1 {
-  margin: 0 0 10px 0; /* ריווח קטן מתחת לכותרת */
+  margin: 0; /* ביטול ריווח תחתון */
   font-size: 28px;
   font-weight: 600;
   color: #00d9ff;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  text-align: center; /* כותרת ממורכזת */
+  cursor: pointer;
 }
 
 .nav-buttons {
   display: flex;
   align-items: center;
-  justify-content: center; /* הכפתורים ממורכזים אופקית */
-  gap: 20px;
+  gap: 20px; /* ריווח בין הכפתורים */
 }
 
 .nav-button {
@@ -91,7 +90,8 @@
 /* התאמה לרוחב מסכים קטנים */
 @media (max-width: 768px) {
   .navbar {
-    padding: 15px;
+    flex-direction: column; /* סידור אנכי למסכים קטנים */
+    align-items: center;
   }
 
   .nav-buttons {
@@ -105,3 +105,46 @@
     text-align: center;
   }
 }
+/* styles.css */
+.sutton-style {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sutton-style:hover {
+  background-color: #dc3545;
+  transform: translateY(-2px);
+}
+/* styles.css */
+.sutton-logout-style {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #ff5c5c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sutton-logout-style:hover {
+  background-color: #e04848;
+  transform: translateY(-2px);
+}
+
