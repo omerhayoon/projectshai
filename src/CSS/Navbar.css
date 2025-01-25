@@ -1,19 +1,19 @@
-.navbar {
-  display: flex;
-  flex-direction: row; /* שינוי לסידור אופקי */
-  align-items: center; /* יישור הכפתורים והכותרת אנכית */
-  justify-content: space-between; /* הפרדה בין הכותרת לכפתורים */
-  background-color: #1a1a2e;
-  color: white;
-  padding: 15px 30px;
-  width: 100%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  box-sizing: border-box;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-}
+/*.navbar {*/
+/*  display: flex;*/
+/*  flex-direction: row; !* שינוי לסידור אופקי *!*/
+/*  align-items: center; !* יישור הכפתורים והכותרת אנכית *!*/
+/*  justify-content: space-between; !* הפרדה בין הכותרת לכפתורים *!*/
+/*  background-color: #1a1a2e;*/
+/*  color: black;*/
+/*  padding: 15px 30px;*/
+/*  width: 100%;*/
+/*  box-shadow: 0 4px 8px rgba(0, 0, 0.0, 0.15);*/
+/*  box-sizing: border-box;*/
+/*  position: fixed;*/
+/*  top: 0;*/
+/*  left: 0;*/
+/*  z-index: 1000;*/
+/*}*/
 
 .navbar h1 {
   margin: 0; /* ביטול ריווח תחתון */
@@ -30,18 +30,18 @@
   gap: 20px; /* ריווח בין הכפתורים */
 }
 
-.nav-button {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-  transition: background-color 0.3s, transform 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+/*.nav-button {*/
+/*  background-color: #28a745;*/
+/*  color: white;*/
+/*  border: none;*/
+/*  padding: 10px 20px;*/
+/*  border-radius: 6px;*/
+/*  cursor: pointer;*/
+/*  font-size: 16px;*/
+/*  font-weight: 500;*/
+/*  transition: background-color 0.3s, transform 0.2s;*/
+/*  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+/*}*/
 
 .nav-button:hover {
   background-color: #dc3545;
@@ -54,29 +54,25 @@
   gap: 1.5rem;
 }
 
-.welcome-text {
-  color: #e0e0e0;
-  font-size: 1.2rem;
-  font-weight: 500;
-}
 
-.logout-button {
-  background-color: #ff5c5c;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-  transition: background-color 0.3s, transform 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
 
-.logout-button:hover {
-  background-color: #e04848;
-  transform: translateY(-2px);
-}
+/*.logout-button {*/
+/*  background-color: #ff5c5c;*/
+/*  color: white;*/
+/*  border: none;*/
+/*  padding: 10px 20px;*/
+/*  border-radius: 6px;*/
+/*  cursor: pointer;*/
+/*  font-size: 16px;*/
+/*  font-weight: 500;*/
+/*  transition: background-color 0.3s, transform 0.2s;*/
+/*  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+/*.logout-button:hover {*/
+/*  background-color: #e04848;*/
+/*  transform: translateY(-2px);*/
+/*}*/
 
 .main-content {
   margin-top: 150px; /* ריווח מתחת ל-navbar */
@@ -147,4 +143,27 @@
   background-color: #e04848;
   transform: translateY(-2px);
 }
+.custom-button {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 2px solid #28a745; /* מסגרת בצבע ירוק */
+  border-radius: 12px; /* פינות מעוגלות */
+  padding: 10px 16px; /* ריווח פנימי */
+  background-color: #28a745; /* רקע ירוק */
+  color: #000000; /* כיתוב שחור */
+  font-weight: bold; /* כיתוב מודגש */
+  font-size: 16px; /* גודל פונט */
+  text-align: center; /* מיקום טקסט במרכז */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* צל רך */
+  transition: all 0.3s ease; /* מעבר חלק */
+}
+
+.custom-button:hover {
+  background-color: #218838; /* שינוי רקע ירוק כהה במעבר עכבר */
+  color: #ffffff; /* כיתוב לבן במעבר עכבר */
+}
+
 

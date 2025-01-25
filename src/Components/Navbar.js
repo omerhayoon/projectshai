@@ -30,11 +30,9 @@ const Navbar = ({setSessionId, sessionId, username, name}) => {
     const handleStatistics = () => {
         navigate("/statistics");
     };
-
     const handleHome = () => {
         navigate("/homepage");
     };
-
     const handleGame = () => {
         if (sessionId) {
             navigate("/game");
@@ -67,70 +65,33 @@ const Navbar = ({setSessionId, sessionId, username, name}) => {
             } else {
                 throw new Error("Logout failed");
             }
-        } catch (error) {
-            console.error("Logout failed:", error);
+        } catch (error) {console.error("Logout failed:", error);
             await showLogoutError();
         }
     };
 
     return (
         <div className="navbar">
-            <h1
-                onClick={handleHome}
-                style={{
-                    cursor: "pointer",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    border: "2px solid black",
-                    padding: "10px "
-                }}
-            >
-                Welcome to Math is Fun
-                <PiMathOperationsFill/>
-            </h1>
+            <h1 className="custom-button" onClick={handleHome}>Welcome to Math is Fun<PiMathOperationsFill/></h1>
             <div className="nav-buttons">
                 {sessionId && (
                     <>
-                        <button className="sutton-style" onClick={handleGame}>
-                            Play Game
-                            <IoLogoGameControllerB/>
-                        </button>
-
-                        <button className="sutton-style" onClick={handleStatistics}>
-                            Statistic
-                            <IoStatsChartSharp/>
-                        </button>
-
-                        <button className="sutton-style" onClick={handelProfile}>
-                            <FaUser/>
-                            Profile
-                        </button>
+                        <button className="sutton-style" onClick={handleGame}>Play Game<IoLogoGameControllerB/></button>
+                        <button className="sutton-style" onClick={handleStatistics}>Statistic<IoStatsChartSharp/></button>
+                        <button className="sutton-style" onClick={handelProfile}><FaUser/>Profile</button>
                     </>
                 )}
                 <div className="user-info">
                     {sessionId ? (
                         <>
-                            <button
-                                onClick={handleVideos} className="sutton-style">
-                                Videos
-                                <MdOutlineOndemandVideo/>
-                            </button>
-
-                            <button className="sutton-logout-style" onClick={handleLogout}>
-                                Logout
-                                <CiLogout/>
-                            </button>
-                            <span className="welcome-text">Hello, {name}</span>
+                            <button onClick={handleVideos} className="sutton-style">Videos<MdOutlineOndemandVideo/></button>
+                            <button className="sutton-logout-style" onClick={handleLogout}>Logout<CiLogout/></button>
+                            <span className="welcome-text text-3xl font-semibold text-red-600" style={{fontFamily: "'Roboto', sans-serif",}}>Hello, {name}</span>
                         </>
                     ) : (
                         <>
-                            <button className="nav-button" onClick={handleLogin}>
-                                Login
-                            </button>
-                            <button className="nav-button" onClick={handleRegister}>
-                                Register
-                            </button>
+                            <button className="nav-button" onClick={handleLogin}>Login</button>
+                            <button className="nav-button" onClick={handleRegister}>Register</button>
                         </>
                     )}
                 </div>

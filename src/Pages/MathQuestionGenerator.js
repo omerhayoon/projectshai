@@ -191,46 +191,46 @@ const MathQuestionGenerator = ({ username }) => {
         <div className="mb-4">
           {renderAnswerInputs()}
           {showWrongMessage && (
-            <div className="mt-2 text-center font-bold text-red-500 text-xl">
-              לא נכון!
-            </div>
+              <div className="mt-2 text-center font-bold text-red-500 text-xl">
+                לא נכון!
+              </div>
           )}
           {showCorrectMessage && (
-            <div className="mt-2 text-center font-bold text-green-500 text-xl">
-              נכון!
-            </div>
+              <div className="mt-2 text-center font-bold text-green-500 text-xl">
+                נכון!
+              </div>
           )}
         </div>
 
         <button
-          onClick={checkAnswer}
-          className="w-full mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            onClick={checkAnswer}
+            className="w-full mt-4 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-lg shadow-lg hover:from-blue-600 hover:to-blue-700 hover:shadow-xl transition-all duration-300 ease-in-out"
         >
           בדוק תשובה
         </button>
 
+
         <button
-          onClick={() => setShowSolution(!showSolution)}
-          className="w-full mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-        >
+            onClick={() => setShowSolution(!showSolution)}
+            className="w-full mt-4 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold rounded-lg shadow-lg hover:from-green-600 hover:to-green-700 hover:shadow-xl transition-all duration-300 ease-in-out">
           {showSolution ? "הסתר פתרון" : "הצג פתרון"}
         </button>
-
         {showSolution && question?.solution && (
-          <div className="mt-4 p-4 bg-gray-100 rounded whitespace-pre-line text-right">
-            {question.solution}
-          </div>
+            <div className="mt-4 p-4 bg-gray-100 rounded whitespace-pre-line text-right">
+              {question.solution}
+            </div>
         )}
-
-        <div className="text-center mt-4">ניקוד: {score}</div>
+        <div
+            className="mt-4 text-center text-xl font-semibold text-gray-700 bg-gray-100 py-2 px-4 rounded-lg shadow-sm">
+          ניקוד: {score}
+        </div>
       </div>
     </div>
   );
-
   return (
-    <MathLayout currentType={currentType} setCurrentType={setCurrentType}>
-      {questionContent}
-    </MathLayout>
+      <MathLayout currentType={currentType} setCurrentType={setCurrentType}>
+        {questionContent}
+      </MathLayout>
   );
 };
 
