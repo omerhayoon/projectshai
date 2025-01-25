@@ -82,6 +82,8 @@ const Navbar = ({setSessionId, sessionId, username, name}) => {
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "10px",
+                    border: "2px solid black",
+                    padding: "10px "
                 }}
             >
                 Welcome to Math is Fun
