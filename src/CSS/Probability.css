@@ -1,0 +1,92 @@
+/* CSS for Probability Question Generator */
+
+.probability-container {
+  direction: rtl;
+  text-align: right;
+  font-family: "Rubik", "Arial", sans-serif;
+}
+
+.probability-question {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.probability-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  text-align: right;
+  direction: rtl;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+}
+
+.probability-solution {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 5px;
+  padding: 15px;
+  margin-top: 15px;
+  white-space: pre-line;
+  line-height: 1.5;
+}
+
+.probability-sidebar-button {
+  width: 100%;
+  padding: 10px;
+  text-align: right;
+  margin-bottom: 8px;
+  border-radius: 5px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.probability-sidebar-button.active {
+  background-color: #4a00e0;
+  color: white;
+  transform: translateX(-5px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.probability-sidebar-button:not(.active) {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.probability-sidebar-button:not(.active):hover {
+  background-color: #e0e0e0;
+}
+
+.feedback-message {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.feedback-message.correct {
+  background-color: rgba(40, 167, 69, 0.2);
+  color: #28a745;
+}
+
+.feedback-message.incorrect {
+  background-color: rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+}
+
+.fraction {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.fraction .numerator {
+  border-bottom: 1px solid;
+  padding: 0 3px;
+}
+
+.fraction .denominator {
+  padding: 0 3px;
+}

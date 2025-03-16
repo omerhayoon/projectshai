@@ -51,23 +51,26 @@ const SignUp = () => {
       case "name":
         return "valid"; // אין צורך בוולידציה נוספת
       case "username":
-        return validationPatterns.username.test(value.trim()) ? "valid" : "invalid";
+        return validationPatterns.username.test(value.trim())
+          ? "valid"
+          : "invalid";
       case "email":
-        return validationPatterns.email.test(value.trim().toLowerCase()) ? "valid" : "invalid";
+        return validationPatterns.email.test(value.trim().toLowerCase())
+          ? "valid"
+          : "invalid";
       case "password":
         return validationPatterns.password.length.test(value) &&
-        validationPatterns.password.specialChar.test(value) &&
-        validationPatterns.password.number.test(value) &&
-        validationPatterns.password.letter.test(value)
-            ? "valid"
-            : "invalid";
+          validationPatterns.password.specialChar.test(value) &&
+          validationPatterns.password.number.test(value) &&
+          validationPatterns.password.letter.test(value)
+          ? "valid"
+          : "invalid";
       case "confirmPassword":
         return value === formData.password ? "valid" : "invalid";
       default:
         return "invalid";
     }
   };
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -83,7 +86,10 @@ const SignUp = () => {
     if (name === "password" && touched.confirmPassword) {
       setInputStatus((prev) => ({
         ...prev,
-        confirmPassword: validateField("confirmPassword", formData.confirmPassword),
+        confirmPassword: validateField(
+          "confirmPassword",
+          formData.confirmPassword
+        ),
       }));
     }
   };
@@ -100,7 +106,7 @@ const SignUp = () => {
   const getInputClassName = (fieldName) => {
     if (!touched[fieldName]) return "input";
     return `input ${
-        inputStatus[fieldName] ? `${inputStatus[fieldName]}-input` : ""
+      inputStatus[fieldName] ? `${inputStatus[fieldName]}-input` : ""
     }`;
   };
 
@@ -122,7 +128,10 @@ const SignUp = () => {
       username: validateField("username", formData.username),
       email: validateField("email", formData.email),
       password: validateField("password", formData.password),
-      confirmPassword: validateField("confirmPassword", formData.confirmPassword),
+      confirmPassword: validateField(
+        "confirmPassword",
+        formData.confirmPassword
+      ),
     };
     setInputStatus(newStatus);
 
@@ -158,8 +167,8 @@ const SignUp = () => {
       if (data && data.success) {
         await Swal.fire({
           icon: "success",
-          title: `ברוך הבא ${formData.name}`,
-          text: "נרשמת בהצלחה!",
+          title: `${formData.name} ברוך הבא`,
+          text: "!נרשמת בהצלחה",
           confirmButtonColor: "#4caf50",
         });
         navigate("/login");
@@ -172,117 +181,117 @@ const SignUp = () => {
         icon: "error",
         title: "שגיאת הרשמה",
         text:
-            error.response?.data?.message ||
-            error.message ||
-            "ההרשמה נכשלה. אנא נסה שוב.",
+          error.response?.data?.message ||
+          error.message ||
+          ".ההרשמה נכשלה. אנא נסה שוב",
       });
     }
   };
 
   const renderPasswordRequirements = () => (
-      <div className="password-requirements">
-        <ul>
+    <div className="password-requirements">
+      <ul>
+        <li
+          className={
+            validationPatterns.password.length.test(formData.password)
+              ? "valid"
+              : "invalid"
+          }
+        >
+          אורך בין 6 ל-12 תווים
+        </li>
+        <li
+          className={
+            validationPatterns.password.specialChar.test(formData.password)
+              ? "valid"
+              : "invalid"
+          }
+        >
+          (!@#$%^&*) לפחות תו מיוחד אחד
+        </li>
+        <li
+          className={
+            validationPatterns.password.number.test(formData.password)
+              ? "valid"
+              : "invalid"
+          }
+        >
+          לפחות מספר אחד
+        </li>
+        <li
+          className={
+            validationPatterns.password.letter.test(formData.password)
+              ? "valid"
+              : "invalid"
+          }
+        >
+          לפחות אות אחת
+        </li>
+        {formData.password && formData.confirmPassword && (
           <li
-              className={
-                validationPatterns.password.length.test(formData.password)
-                    ? "valid"
-                    : "invalid"
-              }
+            className={
+              formData.password === formData.confirmPassword
+                ? "valid"
+                : "invalid"
+            }
           >
-            אורך בין 6 ל-12 תווים
+            סיסמאות תואמות
           </li>
-          <li
-              className={
-                validationPatterns.password.specialChar.test(formData.password)
-                    ? "valid"
-                    : "invalid"
-              }
-          >
-            לפחות תו מיוחד אחד (!@#$%^&*)
-          </li>
-          <li
-              className={
-                validationPatterns.password.number.test(formData.password)
-                    ? "valid"
-                    : "invalid"
-              }
-          >
-            לפחות מספר אחד
-          </li>
-          <li
-              className={
-                validationPatterns.password.letter.test(formData.password)
-                    ? "valid"
-                    : "invalid"
-              }
-          >
-            לפחות אות אחת
-          </li>
-          {formData.password && formData.confirmPassword && (
-              <li
-                  className={
-                    formData.password === formData.confirmPassword
-                        ? "valid"
-                        : "invalid"
-                  }
-              >
-                סיסמאות תואמות
-              </li>
-          )}
-        </ul>
-      </div>
+        )}
+      </ul>
+    </div>
   );
 
   return (
-      <div className="container">
-        <div className="form">
-          <h1>הרשמה</h1>
-          <form onSubmit={handleSubmit}>
-            {[
-              { name: "name", type: "text", placeholder: "שם מלא" },
-              { name: "username", type: "text", placeholder: "שם משתמש" },
-              { name: "email", type: "email", placeholder: "מייל" },
-              { name: "password", placeholder: "סיסמא" },
-              { name: "confirmPassword", placeholder: "אשר סיסמא" },
-            ].map((field) => (
-                <div key={field.name} className="input-container">
-                  <input
-                      type={field.type || (showPassword ? "text" : "password")}
-                      name={field.name}
-                      placeholder={field.placeholder}
-                      value={formData[field.name]}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      className={getInputClassName(field.name)}
-                      required
-                  />
-                </div>
-            ))}
+    <div className="container">
+      <div className="form">
+        <h1>הרשמה</h1>
+        <form onSubmit={handleSubmit}>
+          {[
+            { name: "name", type: "text", placeholder: "שם מלא" },
+            { name: "username", type: "text", placeholder: "שם משתמש" },
+            { name: "email", type: "email", placeholder: "מייל" },
+            { name: "password", placeholder: "סיסמא" },
+            { name: "confirmPassword", placeholder: "אשר סיסמא" },
+          ].map((field) => (
+            <div key={field.name} className="input-container">
+              <input
+                type={field.type || (showPassword ? "text" : "password")}
+                name={field.name}
+                placeholder={field.placeholder}
+                value={formData[field.name]}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={getInputClassName(field.name)}
+                required
+              />
+            </div>
+          ))}
 
-            {renderPasswordRequirements()}
-
-            <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="togglePassword"
-            >
-              {showPassword ? "Hide" : "Show"} Password
-            </button>
-
-            <button type="submit" className="submitButton">
-              Sign Up
-            </button>
-          </form>
+          {renderPasswordRequirements()}
 
           <button
-              type="button"
-              onClick={() => navigate("/login")}
-              className="backButton"
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="togglePassword"
           >
-            Back to Login
+            {showPassword ? "הסתר" : "הצג"} סיסמא
           </button>
-        </div>
+
+          <button type="submit" className="submitButton">
+            הרשמה
+          </button>
+        </form>
+
+        <button
+          type="button"
+          onClick={() => navigate("/login")}
+          className="backButton"
+        >
+          חזרה להתחברות
+        </button>
       </div>
+    </div>
   );
 };
 

@@ -1,7 +1,13 @@
+// Components/MathLayout.js
 import React from "react";
 import { questionTypes } from "../utils/constants";
 
 const MathLayout = ({ currentType, setCurrentType, children }) => {
+  // Filter out the probability types to only get math question types
+  const mathQuestionTypes = Object.entries(questionTypes).filter(
+    ([type, _]) => !type.startsWith("probability")
+  );
+
   const SidebarButton = ({ type, label }) => (
     <button
       onClick={() => setCurrentType(type)}
@@ -21,7 +27,7 @@ const MathLayout = ({ currentType, setCurrentType, children }) => {
       <div className="w-64 bg-white p-4 rounded-lg shadow-lg">
         <h2 className="text-xl font-bold mb-4 text-right">נושאים</h2>
         <div className="space-y-2">
-          {Object.entries(questionTypes).map(([type, label]) => (
+          {mathQuestionTypes.map(([type, label]) => (
             <SidebarButton key={type} type={type} label={label} />
           ))}
         </div>

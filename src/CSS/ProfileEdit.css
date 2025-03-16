@@ -1,0 +1,181 @@
+/* ProfileEdit.css - Styling for the profile editing component */
+
+.profile-edit-container {
+  direction: rtl;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.profile-edit-title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #3b82f6;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.profile-edit-form {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.name-input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.name-input:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.profile-icon-section {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.current-icon {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.current-icon-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid #3b82f6;
+  padding: 3px;
+  background-color: white;
+}
+
+.icon-category-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.category-button {
+  padding: 8px 15px;
+  background-color: #f3f4f6;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.category-button:hover {
+  background-color: #e5e7eb;
+}
+
+.category-button.active {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.icons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+
+.icon-item:hover {
+  background-color: #f3f4f6;
+  transform: translateY(-3px);
+}
+
+.icon-item.selected {
+  background-color: #dbeafe;
+  border: 2px solid #3b82f6;
+}
+
+.icon-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-bottom: 5px;
+  object-fit: cover;
+}
+
+.icon-name {
+  font-size: 0.8rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+.save-button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 30px;
+}
+
+.save-button:hover {
+  background-color: #2563eb;
+}
+
+.save-button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.notification {
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.notification.success {
+  background-color: #ecfdf5;
+  color: #065f46;
+  border-left: 4px solid #10b981;
+}
+
+.notification.error {
+  background-color: #fef2f2;
+  color: #991b1b;
+  border-left: 4px solid #ef4444;
+}

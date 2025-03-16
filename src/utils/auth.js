@@ -24,8 +24,8 @@ export const clearSession = () => {
 export const showLogoutSuccess = () => {
   return Swal.fire({
     icon: "success",
-    title: "Logged Out",
-    text: "You have been successfully logged out!",
+    title: "התנתקת",
+    text: "!התנתקת בהצלחה",
     confirmButtonColor: "#4caf50",
   });
 };
@@ -33,8 +33,8 @@ export const showLogoutSuccess = () => {
 export const showLogoutError = () => {
   return Swal.fire({
     icon: "error",
-    title: "Logout Failed",
-    text: "Failed to logout. Please try again.",
+    title: "ההתנתקות נכשלה",
+    text: "ההתנתקות נכשלה, נסה שוב מאוחר יותר",
     confirmButtonColor: "#ff4444",
   });
 };
@@ -42,8 +42,8 @@ export const showLogoutError = () => {
 export const showLoginSuccess = (name) => {
   return Swal.fire({
     icon: "success",
-    title: "Welcome " + name,
-    text: "You have successfully logged in!",
+    title: name + " ברוך הבא ",
+    text: "!התחברת בהצלחה",
     confirmButtonColor: "#4caf50",
     background: "#f4f4f4",
   });
@@ -52,7 +52,7 @@ export const showLoginSuccess = (name) => {
 export const showLoginError = () => {
   return Swal.fire({
     icon: "error",
-    title: "Login Failed",
-    text: "Invalid username or password.",
+    title: "ההתחברות נכשלה",
+    text: "שם משתמש/סיסמא שגויים",
   });
 };

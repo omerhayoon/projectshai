@@ -1,3 +1,4 @@
+// src/App.js
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./CSS/App.css";
@@ -8,6 +9,7 @@ import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
 import HomePage from "./Pages/HomePage";
 import MathQuestionGenerator from "./Pages/MathQuestionGenerator";
+import ProbabilityQuestionGenerator from "./Pages/ProbabilityQuestionGenerator";
 import LearningVideos from "./Pages/LearningVideos";
 import UserStatistics from "./Pages/UserStatistics";
 import UserProfile from "./Pages/UserProfile";
@@ -18,7 +20,7 @@ const App = () => {
   const [name, setName] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [profileData, setProfileData] = useState(null);
-  //this is still working
+
   useEffect(() => {
     const checkSession = async () => {
       try {
@@ -27,6 +29,8 @@ const App = () => {
           clearSession();
           setSessionId(null);
           setUsername(null);
+          setName(null);
+          setProfileData(null);
           return;
         }
 
@@ -35,7 +39,13 @@ const App = () => {
         if (data.success) {
           setUsername(data.username);
           setName(data.name);
-          setProfileData(data);
+          setProfileData({
+            username: data.username,
+            name: data.name,
+            email: data.email,
+            profileIcon: data.profileIcon,
+            isAdmin: data.isAdmin,
+          });
         } else {
           clearSession();
           setSessionId(null);
@@ -43,6 +53,8 @@ const App = () => {
           setName(null);
           setProfileData(null);
         }
+      } catch (error) {
+        console.error("Error checking session:", error);
       } finally {
         setIsLoading(false);
       }
@@ -51,7 +63,14 @@ const App = () => {
     checkSession();
     const interval = setInterval(checkSession, 300000);
     return () => clearInterval(interval);
-  }, [sessionId]); // Add sessionId dependency
+  }, [sessionId]);
+
+  // Function to update profileData after profile changes
+  const handleProfileUpdate = (newProfileData) => {
+    setProfileData(newProfileData);
+    setName(newProfileData.name); // Sync name state
+    console.log("Updated profileData in App.js:", newProfileData); // Debug
+  };
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -63,9 +82,10 @@ const App = () => {
           sessionId={sessionId}
           username={username}
           name={name}
+          profileIcon={profileData?.profileIcon}
           className="fixed top-0 left-0 right-0 z-50 bg-[#1a1a2e] shadow-lg"
         />
-        <main className="pt-20 px-6 mx-auto max-w-7xl">
+        <main className="pt-10 px-6 mx-auto max-w-7xl">
           <Routes>
             <Route
               path="/homepage"
@@ -91,13 +111,21 @@ const App = () => {
                   element={<MathQuestionGenerator username={username} />}
                 />
                 <Route
+                  path="/probability"
+                  element={<ProbabilityQuestionGenerator username={username} />}
+                />
+                <Route
                   path="/statistics"
                   element={<UserStatistics username={username} />}
                 />
-
                 <Route
                   path="/profile"
-                  element={<UserProfile user={profileData} />}
+                  element={
+                    <UserProfile
+                      user={profileData}
+                      onProfileUpdate={handleProfileUpdate}
+                    />
+                  }
                 />
               </>
             )}

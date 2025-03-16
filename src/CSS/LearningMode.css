@@ -1,0 +1,209 @@
+/* CSS for Learning Mode Selector */
+
+.learning-mode-container {
+  direction: rtl;
+  text-align: right;
+  font-family: "Rubik", "Arial", sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.learning-mode-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #3b82f6;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.learning-mode-subtitle {
+  font-size: 1.2rem;
+  color: #4b5563;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.learning-mode-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .learning-mode-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+.learning-mode-card {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.learning-mode-card:hover {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+}
+
+.learning-mode-card.manual {
+  border-color: #dbeafe;
+}
+
+.learning-mode-card.manual:hover {
+  border-color: #3b82f6;
+}
+
+.learning-mode-card.adaptive {
+  border-color: #ede9fe;
+}
+
+.learning-mode-card.adaptive:hover {
+  border-color: #8b5cf6;
+}
+
+.learning-mode-card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.manual .learning-mode-card-title {
+  color: #2563eb;
+}
+
+.adaptive .learning-mode-card-title {
+  color: #7c3aed;
+}
+
+.learning-mode-card-description {
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+
+.learning-mode-card-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.manual .learning-mode-card-icon {
+  color: #3b82f6;
+}
+
+.adaptive .learning-mode-card-icon {
+  color: #8b5cf6;
+}
+
+.learning-mode-level-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.level-button {
+  padding: 0.75rem;
+  text-align: center;
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid #e5e7eb;
+}
+
+.level-button:hover {
+  background-color: #e5e7eb;
+}
+
+.level-button.recommended {
+  border-color: #10b981;
+  position: relative;
+}
+
+.level-button.recommended::after {
+  content: "מומלץ";
+  position: absolute;
+  top: -0.5rem;
+  right: 50%;
+  transform: translateX(50%);
+  background-color: #10b981;
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+}
+
+.level-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #4b5563;
+}
+
+.level-text {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  color: #4b5563;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+}
+
+.back-button:hover {
+  color: #1f2937;
+  text-decoration: underline;
+}
+
+.learning-mode-feedback {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.learning-mode-feedback.success {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.learning-mode-feedback.error {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.learning-mode-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.learning-mode-spinner {
+  border: 4px solid #e5e7eb;
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
