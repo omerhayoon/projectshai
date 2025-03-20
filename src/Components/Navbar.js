@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { axios } from "../utils/axiosConfig";
+
 import {
   clearSession,
   showLogoutSuccess,
@@ -21,6 +22,7 @@ const Navbar = ({ setSessionId, sessionId, username, name, profileIcon }) => {
 
   const studyDropdownRef = useRef(null);
   const userDropdownRef = useRef(null);
+
 
   const toggleStudyDropdown = () => {
     setStudyDropdown(!studyDropdown);
