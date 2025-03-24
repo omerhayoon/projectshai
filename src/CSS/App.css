@@ -39,3 +39,12 @@
 * {
   font-family: "Open Sans", serif;
 }
+.no-scrollbar {
+  overflow: auto; /* enables scrolling */
+  scrollbar-width: none; /* hides scrollbar in Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari, Edge, and other WebKit browsers */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

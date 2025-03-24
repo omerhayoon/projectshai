@@ -3,15 +3,11 @@ import React from "react";
 const AboutUs = () => {
   const styles = {
     container: {
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "flex-start",
       width: "100%",
-      padding: "24px",
-      marginTop: "20px",
+      height: "100%",
     },
     card: {
-      maxWidth: "672px",
+      maxWidth: "750px",
       width: "100%",
       backgroundColor: "rgba(255,255,255,0.97)",
       borderRadius: "8px",
@@ -35,7 +31,7 @@ const AboutUs = () => {
 
   return (
     <div style={styles.container}>
-      <div style={styles.card}>
+      <div style={styles.card} className="h-full">
         <h2 style={styles.title}>אודותינו 🧮</h2>
         <div style={styles.text}>
           <p>

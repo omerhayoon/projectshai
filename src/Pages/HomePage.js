@@ -13,18 +13,12 @@ const HomePage = ({ sessionId }) => {
   }, []);
 
   return (
-    <div
-      className="flex flex-row-reverse justify-center items-start w-full p-4 gap-8"
-      dir="rtl"
-    >
-      {/* Reviews on the right side */}
-      <div className="w-1/3 sticky top-4">
-        <ReviewsTable />
-      </div>
-
-      {/* About Us in the center */}
-      <div className="w-1/2">
+    <div className="grid grid-cols-3  w-full p-4 h-full " dir="rtl">
+      <div className="col-span-2 h-full">
         <AboutUs />
+      </div>
+      <div className="col-span-1 border">
+        <ReviewsTable />
       </div>
     </div>
   );

@@ -16,6 +16,16 @@ code {
     monospace;
 }
 
-.directionHebrew{
+.directionHebrew {
   direction: rtl !important;
+}
+.no-scrollbar {
+  overflow: auto; /* Enables scrolling */
+  scrollbar-width: none; /* Hides scrollbar in Firefox */
+  -ms-overflow-style: none; /* Hides scrollbar in IE/Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari, and other WebKit browsers */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
 }
