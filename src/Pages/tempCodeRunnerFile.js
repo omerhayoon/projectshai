@@ -1,0 +1,1 @@
+if (mode === LEARNING_MODES.ADAPTIVE) {

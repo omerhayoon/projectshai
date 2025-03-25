@@ -119,8 +119,11 @@ const MathQuestionGenerator = ({ username }) => {
         setHasCheckedAnswer(false);
         setShowWrongMessage(false);
         setShowCorrectMessage(false);
-        setLevelUpMessage("");
-        setLevelDownMessage("");
+        // Only clear the level messages in manual mode
+        if (learningMode !== LEARNING_MODES.ADAPTIVE) {
+          setLevelUpMessage("");
+          setLevelDownMessage("");
+        }
       } else {
         console.error("Empty response data when fetching question");
       }
@@ -223,7 +226,12 @@ const MathQuestionGenerator = ({ username }) => {
               5: "linear",
               6: "system",
             }[newLevel] || "addition";
-          setTimeout(() => setCurrentType(newType), 1500);
+          // Delay updating the type and fetching a new question for 3000ms so the messages remain visible
+          setTimeout(() => {
+            setCurrentType(newType);
+            fetchNewQuestion(newType, newLevel);
+          }, 3000);
+          return;
         }
       }
       setHasCheckedAnswer(true);
@@ -233,10 +241,7 @@ const MathQuestionGenerator = ({ username }) => {
         setTimeout(() => setShowCorrectMessage(false), 1500);
       } else {
         setShowWrongMessage(true);
-        setTimeout(() => {
-          setShowWrongMessage(false);
-          setShowSolution(true);
-        }, 1500);
+        setShowSolution(true);
       }
     } catch (error) {
       console.error("Error checking answer:", error);
