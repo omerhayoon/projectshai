@@ -13,7 +13,7 @@ import ProbabilityQuestionGenerator from "./Pages/ProbabilityQuestionGenerator";
 import LearningVideos from "./Pages/LearningVideos";
 import UserStatistics from "./Pages/UserStatistics";
 import UserProfile from "./Pages/UserProfile";
-
+//before change
 const App = () => {
   const [sessionId, setSessionId] = useState(null);
   const [username, setUsername] = useState(null);
@@ -108,7 +108,7 @@ const App = () => {
             {sessionId && (
               <>
                 <Route
-                  path="/game"
+                  path="/math"
                   element={<MathQuestionGenerator username={username} />}
                 />
                 <Route

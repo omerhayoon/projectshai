@@ -23,7 +23,6 @@ const Navbar = ({ setSessionId, sessionId, username, name, profileIcon }) => {
   const studyDropdownRef = useRef(null);
   const userDropdownRef = useRef(null);
 
-
   const toggleStudyDropdown = () => {
     setStudyDropdown(!studyDropdown);
     if (userDropdown) setUserDropdown(false);
@@ -109,7 +108,7 @@ const Navbar = ({ setSessionId, sessionId, username, name, profileIcon }) => {
                   dir="rtl"
                 >
                   <button
-                    onClick={() => handleNavigation("/game")}
+                    onClick={() => handleNavigation("/math")}
                     className="flex items-center gap-2 px-3 py-2 text-white hover:bg-blue-800 text-sm"
                   >
                     <IoLogoGameControllerB />
