@@ -32,6 +32,10 @@ const LearningVideos = () => {
     return <div className="min-h-screen flex items-center justify-center text-xl text-red-500">{error}</div>;
   }
 
+  const getAllVideos = () => {
+    return Object.values(videoCategories).flat();
+  };
+
   return (
       <div className="min-h-screen bg-gradient-to-r from-blue-50 to-blue-100 p-6">
         <header className="text-center mb-10">
@@ -45,6 +49,15 @@ const LearningVideos = () => {
         </header>
 
         <div className="flex flex-wrap justify-center gap-4 mb-6">
+          {/* כפתור "הצג את כל הסרטונים" */}
+          <button
+              className={`px-4 py-2 rounded-lg font-semibold shadow-md ${!selectedCategory ? "bg-blue-600 text-white" : "bg-blue-200 text-blue-800"}`}
+              onClick={() => setSelectedCategory(null)}
+          >
+            כל הסרטונים
+          </button>
+
+          {/* כפתורים של קטגוריות */}
           {Object.keys(videoCategories).map((category) => (
               <button
                   key={category}
@@ -56,13 +69,20 @@ const LearningVideos = () => {
           ))}
         </div>
 
-        {selectedCategory && (
-            <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-              {videoCategories[selectedCategory].map((video, index) => (
+        {/* הצגת הסרטונים */}
+        <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+          {selectedCategory ? (
+              videoCategories[selectedCategory].map((video, index) => (
                   <Video key={index} url={video.url} title={video.title} />
-              ))}
-            </div>
-        )}
+              ))
+          ) : (
+              <div className="max-h-[80vh] overflow-y-auto">
+                {getAllVideos().map((video, index) => (
+                    <Video key={index} url={video.url} title={video.title} />
+                ))}
+              </div>
+          )}
+        </div>
       </div>
   );
 };
