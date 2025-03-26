@@ -2,13 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { axios } from "../utils/axiosConfig"; // adjust the import path if needed
 import Swal from "sweetalert2"; // Import SweetAlert2
 
-const ReviewsTable = () => {
+const ReviewsTable = ({ isLoggedIn }) => {
   const tableRef = useRef(null);
   const [reviews, setReviews] = useState([]);
   const [content, setContent] = useState("");
   const [scrollPosition, setScrollPosition] = useState(0);
   const [charLimitWarning, setCharLimitWarning] = useState(false);
-  const [isLoggedIn] = useState(false); // Simulate logged-in status; replace with your auth logic
 
   // Fetch reviews when the component mounts
   useEffect(() => {
@@ -25,39 +24,53 @@ const ReviewsTable = () => {
   };
 
   const addReview = async () => {
-    if (!isLoggedIn) {
-      // Show beautiful RTL alert if user is not logged in
+    // Only attempt if there's actual content
+    if (!content.trim()) return;
+
+    try {
+      const payload = { content };
+      const response = await axios.post("/api/reviews", payload);
+      setReviews((prevReviews) => [...prevReviews, response.data]);
+      setContent("");
+      setCharLimitWarning(false);
       Swal.fire({
-        icon: "info",
-        title: "תקלה",
-        text: "כדי להוסיף ביקורת, עליך להתחבר תחילה לחשבונך",
+        icon: "success",
+        title: "הביקורת נוספה",
+        text: "הביקורת נוספה בהצלחה",
         confirmButtonText: "בסדר",
-        confirmButtonColor: "#1e3a8a", // Nice blue color
-        backdrop: "rgba(0,0,0,0.4)", // Soft backdrop
+        confirmButtonColor: "#1e3a8a",
+        backdrop: "rgba(0,0,0,0.4)",
         customClass: {
           popup: "rounded-lg shadow-lg",
           title: "text-blue-700 font-bold",
           content: "text-gray-600",
         },
-        reverseButtons: true, // RTL: Move confirm button to the right
-        direction: "rtl", // Explicitly set RTL direction
+        reverseButtons: true,
+        direction: "rtl",
       });
-      return; // Stop execution if not logged in
-    }
-
-    if (content.trim()) {
-      try {
-        const payload = { content };
-        const response = await axios.post("/api/reviews", payload);
-        setReviews((prevReviews) => [...prevReviews, response.data]);
-        setContent("");
-        setCharLimitWarning(false);
-        setTimeout(() => {
-          if (tableRef.current) {
-            tableRef.current.scrollTop = tableRef.current.scrollHeight;
-          }
-        }, 100);
-      } catch (error) {
+      setTimeout(() => {
+        if (tableRef.current) {
+          tableRef.current.scrollTop = tableRef.current.scrollHeight;
+        }
+      }, 100);
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        Swal.fire({
+          icon: "info",
+          title: "נא התחבר",
+          text: "כדי להוסיף ביקורת, עליך להתחבר תחילה לחשבונך",
+          confirmButtonText: "בסדר",
+          confirmButtonColor: "#1e3a8a",
+          backdrop: "rgba(0,0,0,0.4)",
+          customClass: {
+            popup: "rounded-lg shadow-lg",
+            title: "text-blue-700 font-bold",
+            content: "text-gray-600",
+          },
+          reverseButtons: true,
+          direction: "rtl",
+        });
+      } else {
         console.error("Error adding review", error);
       }
     }
