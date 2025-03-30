@@ -29,3 +29,6 @@ code {
 .no-scrollbar::-webkit-scrollbar {
   display: none !important;
 }
+.rtl {
+  direction: rtl !important;
+}

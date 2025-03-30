@@ -17,21 +17,12 @@ const UserProfile = ({ user, onProfileUpdate }) => {
   const profileIcon = getIconById(updatedUser.profileIcon || "default");
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6 bg-gray-50">
+    <div className="w-full max-w-2xl mx-auto p-6 bg-gray-50 -mt-10">
       {isEditing ? (
         <div>
-          <div className="flex justify-between items-center mb-6">
-            <button
-              onClick={() => setIsEditing(false)}
-              className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
-            >
-              <Check size={18} />
-              <span>סיום עריכה</span>
-            </button>
-            <h2 className="text-2xl font-bold">עריכת פרופיל</h2>
-          </div>
           <ProfileEdit
             user={updatedUser}
+            setIsEditing={setIsEditing}שם פרטי
             onProfileUpdate={handleProfileUpdate}
           />
         </div>

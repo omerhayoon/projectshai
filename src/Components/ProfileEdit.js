@@ -7,8 +7,9 @@ import {
   getIconById,
 } from "../utils/profileIcons";
 import "../CSS/ProfileEdit.css";
+import { Check } from "lucide-react";
 
-const ProfileEdit = ({ user, onProfileUpdate }) => {
+const ProfileEdit = ({ user, onProfileUpdate, setIsEditing }) => {
   const [privateName, setPrivateName] = useState("");
   const [selectedIconId, setSelectedIconId] = useState("default");
   const [activeCategory, setActiveCategory] = useState("all");
@@ -97,8 +98,16 @@ const ProfileEdit = ({ user, onProfileUpdate }) => {
 
   return (
     <div className="profile-edit-container">
-      <h1 className="profile-edit-title">עדכון פרופיל</h1>
-
+      <div className="flex justify-between items-center">
+        <h1 className="font-semibold text-3xl">עדכון פרופיל</h1>
+        <button
+          onClick={() => setIsEditing(false)}
+          className="flex items-center gap-1 hover:text-blue-800 px-4 py-3 rounded-md bg-blue-500 text-white"
+        >
+          <span>סיום עריכה</span>
+          <Check size={18} />
+        </button>
+      </div>
       {notification.show && (
         <div className={`notification ${notification.type}`}>
           {notification.message}
@@ -107,7 +116,7 @@ const ProfileEdit = ({ user, onProfileUpdate }) => {
 
       <form onSubmit={handleSubmit} className="profile-edit-form">
         <div className="form-group">
-          <label htmlFor="privateName" className="form-label">
+          <label htmlFor="privateName" className="form-label font-semibold">
             שם פרטי
           </label>
           <input
@@ -115,7 +124,7 @@ const ProfileEdit = ({ user, onProfileUpdate }) => {
             id="privateName"
             value={privateName}
             onChange={(e) => setPrivateName(e.target.value)}
-            className="name-input"
+            className="name-input font-semibold"
             placeholder="הזן את שמך הפרטי"
           />
         </div>

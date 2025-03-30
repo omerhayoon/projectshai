@@ -40,9 +40,13 @@ const Video = ({ url, title, customTitle }) => {
       </div>
 
       <div className="p-2">
-        <h2 className="text-sm font-bold mb-1 line-clamp-2">{title}</h2>
+        <h2 className="text-sm font-bold mb-1 line-clamp-2 text-right">
+          {title}
+        </h2>
         {customTitle && (
-          <p className="text-xs text-gray-600 line-clamp-1">{customTitle}</p>
+          <p className="text-xs text-gray-600 line-clamp-1 text-right">
+            {customTitle}
+          </p>
         )}
       </div>
     </a>
