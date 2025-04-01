@@ -7,6 +7,7 @@ import LearningModeSelector, {
   LEARNING_MODES,
 } from "../Components/LearningModeSelector";
 
+
 // Helper function to format math expressions for prettier display.
 // It removes extra spaces between numbers and letters, formats the division symbol,
 // and trims the string to remove any redundant blank lines.
@@ -61,6 +62,15 @@ const MathQuestionGenerator = ({ username }) => {
     (type) => !type.startsWith("probability")
   );
 
+  const subjects = [
+    "addition",
+    "subtraction",
+    "multiplication",
+    "division",
+    "linear",
+    "system",
+  ];
+
   const handleSelectMode = (mode, level) => {
     setLearningMode(mode);
     setCurrentLevel(level);
@@ -75,29 +85,9 @@ const MathQuestionGenerator = ({ username }) => {
     setLevelDownMessage("");
 
     if (mode === LEARNING_MODES.ADAPTIVE) {
-      const levelToTypeMap = {
-        1: "addition",
-        2: "subtraction",
-        3: "multiplication",
-        4: "division",
-        5: "linear",
-        6: "system",
-      };
-      setCurrentType(levelToTypeMap[level] || "addition");
-    }
-
-    if (mode === LEARNING_MODES.ADAPTIVE) {
-      const typeForLevel =
-        {
-          1: "addition",
-          2: "subtraction",
-          3: "multiplication",
-          4: "division",
-          5: "linear",
-          6: "system",
-        }[level] || "addition";
-      fetchNewQuestion(typeForLevel, level);
-    } else {
+      const randomSubject =
+          subjects[Math.floor(Math.random() * subjects.length)] || "addition";
+      setCurrentType(randomSubject);
       fetchNewQuestion(currentType, level);
     }
   };
@@ -184,15 +174,7 @@ const MathQuestionGenerator = ({ username }) => {
       });
       let adaptiveResponse = null;
       if (learningMode === LEARNING_MODES.ADAPTIVE) {
-        const typeToLevelMap = {
-          addition: 1,
-          subtraction: 2,
-          multiplication: 3,
-          division: 4,
-          linear: 5,
-          system: 6,
-        };
-        const currentMathLevel = typeToLevelMap[question.type] || 1;
+        const currentMathLevel = currentLevel || 1;
         adaptiveResponse = await axios.post("/api/learning/process-answer", {
           username,
           subjectType: "math",
@@ -218,14 +200,7 @@ const MathQuestionGenerator = ({ username }) => {
           }
           setCurrentLevel(newLevel);
           const newType =
-            {
-              1: "addition",
-              2: "subtraction",
-              3: "multiplication",
-              4: "division",
-              5: "linear",
-              6: "system",
-            }[newLevel] || "addition";
+              subjects[Math.floor(Math.random() * subjects.length)] || "addition";
           // Delay updating the type and fetching a new question for 3000ms so the messages remain visible
           setTimeout(() => {
             setCurrentType(newType);
